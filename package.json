@@ -1,0 +1,47 @@
+{
+    "name": "@troup/server",
+    "private": true,
+    "version": "0.0.0",
+    "author": "Samrith Shankar <samrith.shankar@outlook.com>",
+    "license": "GPL-3.0",
+    "repository": "git@github.com:troup-io/troup-server.git",
+    "scripts": {
+        "bs:install": "yarn install",
+        "bs:docker-compose": "(cd database && docker-compose up -d)",
+        "bs:prisma-deploy": "(cd database &&  dotenv -e ../.env -- npx prisma deploy)",
+        "bootstrap": "npm-run-all bs:install bs:docker-compose bs:prisma-deploy start",
+        "start": "dotenv -- nodemon -e ts,graphql -x ts-node src/index.ts",
+        "debug": "dotenv -- nodemon -e ts,graphql -x ts-node --inspect src/index.ts",
+        "lint": "eslint . --ext .ts,.json,.js --ignore-pattern 'src/generated'",
+        "build": "rimraf dist && tsc",
+        "semver:alpha": "npm version --prerelease=\"alpha\"",
+        "semver:beta": "npm version --prerelease=\"beta\"",
+        "semver": "npm version"
+    },
+    "resolutions": {
+        "graphql": "14.3.0"
+    },
+    "dependencies": {
+        "bcryptjs": "2.4.3",
+        "graphql-yoga": "1.18.3",
+        "jsonwebtoken": "8.5.1",
+        "prisma-client-lib": "^1.34.10"
+    },
+    "devDependencies": {
+        "@types/bcryptjs": "2.4.2",
+        "@types/node": "13.1.7",
+        "@typescript-eslint/eslint-plugin": "^2.16.0",
+        "@typescript-eslint/parser": "^2.16.0",
+        "dotenv-cli": "3.1.0",
+        "eslint": "^6.8.0",
+        "eslint-config-prettier": "^6.9.0",
+        "eslint-plugin-prettier": "^3.1.2",
+        "nodemon": "2.0.2",
+        "prettier": "^1.19.1",
+        "prisma": "1.34.10",
+        "rimraf": "3.0.0",
+        "ts-node": "8.6.2",
+        "typescript": "3.7.5",
+        "yarn-run-all": "^3.1.1"
+    }
+}

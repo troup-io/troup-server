@@ -1,0 +1,1743 @@
+# source: http://localhost:4000
+# timestamp: Mon Jan 20 2020 22:54:50 GMT+0100 (Central European Standard Time)
+
+input AddSoftEquipmentsInput {
+  orderId: String!
+  displayOnly: Boolean!
+}
+
+type AuthenticationInfo {
+  token: String
+  user: User
+  message: String
+}
+
+type BillingDetails {
+  address: BillingDetailsAddress
+  email: String
+  name: String
+  phone: String
+}
+
+type BillingDetailsAddress {
+  city: String
+  country: String
+  line1: String
+  line2: String
+  postal_code: String
+  state: String
+}
+
+type Bundle {
+  _id: String!
+  mongoId: String!
+  createdAt: String
+  status: Int
+  state: String
+  stateHistory: [StateHistory]
+  beginDate: String
+  closingDate: String
+  operatorId: String
+  type: String
+  boxes: [BundleBoxes]
+  preparationErrors: [BundlePreparationErrors]
+  number: Int
+  updatedAt: String
+  probeDate: String
+  trolleyId: String
+}
+
+type BundleBoxes {
+  code: String
+  position: Int
+  number: Int
+  orderId: String
+  orderLabel: String
+  round: String
+  roundName: String
+  sequence: Int
+  volumeTaken: Float
+  isFull: Boolean
+  products: [BundleBoxesProducts]
+  deliveryId: String
+  bundleId: String
+  comment: String
+}
+
+type BundleBoxesProducts {
+  _id: String
+  code: String
+  productLabel: String
+  unit: String
+  unitWeight: Int
+  unitVolume: Float
+  photoUrl: String
+  location: String
+  quantity: Int
+  quantityPicked: Int
+  type: String
+  categoryId: String
+  categoryIndex: Int
+  productIndex: Int
+  comment: String
+  volume: Float
+  completeDate: String
+}
+
+type BundlePreparationErrors {
+  productId: String
+  errorRefs: Int
+  errorWeight: Int
+  errorPosition: Int
+}
+
+input BundleWhere {
+  mongoId: String
+  _id: String
+}
+
+type Category {
+  _id: String
+  mongoId: String
+  createdAt: String
+  updatedAt: String
+  name: String
+  title: String
+  titleSingular: String
+  description: String
+  portionMin: Float
+  portionMax: Float
+  step: Float
+  picture: String
+  conversion: Float
+  a_portion_polynome: Float
+  b_portion_polynome: Float
+  emoji: String
+  defaultPortion: Float
+  fixedMinPortionPerProduct: Boolean
+  minPortionPerProduct: Float
+  discount: Discount
+  packs: [CategoryPacks]
+  index: Float
+  indexDisplay: Float
+  access: [String]
+  state: String
+  stateHistory: [StateHistory]
+  mode: String
+  isAnnual: Boolean
+}
+
+type CategoryPacks {
+  price: Float
+  name: String
+}
+
+input CategoryWhere {
+  name_contains: String
+  state_not_in: [String]
+  isAnnual: Boolean
+}
+
+input CheckoutInput {
+  orderId: String!
+  oldState: String!
+}
+
+type Delivery {
+  _id: String!
+  mongoId: String!
+  createdAt: String
+  orderId: String
+  organizationId: String
+  type: String
+  installationId: String
+  totemId: String
+  userId: String
+  taskId: String
+  boxes: [DeliveryBoxes]
+  totemNumber: Int
+  orderNumber: Int
+  installationNumber: Int
+  time: [DeliveryTime]
+  driver: [DeliveryDriver]
+  photos: [DeliveryPhotos]
+  round: String
+  roundName: String
+  roundColor: String
+  sequence: Int
+  taskUrbantzId: String
+  date_delivery: String
+  stateHistory: [StateHistory]
+  delay: Int
+  state: String
+  day: String
+  updatedAt: String
+  dateUrbantz: String
+  organizationName: String
+  trackingUrl: String
+  equipmentsCount: [DeliveryEquipmentsCount]
+  signature: JSON
+  serviceTime: Int
+  theoricServiceTime: Int
+  forced: Boolean
+}
+
+type DeliveryBoxes {
+  code: String
+  position: Int
+  number: Int
+  orderId: String
+  orderLabel: String
+  round: String
+  roundName: String
+  sequence: Int
+  volumeTaken: Int
+  isFull: Boolean
+  products: [DeliveryBoxesProducts]
+  deliveryId: String
+  bundleId: String
+}
+
+type DeliveryBoxesProducts {
+  _id: String
+  code: String
+  productLabel: String
+  unit: String
+  unitWeight: Int
+  unitVolume: Float
+  photoUrl: String
+  location: String
+  quantity: Int
+  quantityPicked: Int
+  type: String
+  categoryIndex: Int
+  productIndex: Int
+  comment: String
+  volume: Float
+}
+
+type DeliveryDay {
+  monday: Boolean
+  tuesday: Boolean
+  wednesday: Boolean
+  thursday: Boolean
+  friday: Boolean
+  saturday: Boolean
+}
+
+type DeliveryDriver {
+  _id: String
+  firstname: String
+  lastname: String
+}
+
+type DeliveryEquipmentsCount {
+  bowl: Int
+  fruitBasket: Int
+  snackBox: Int
+  dispenserInstalled: Int
+
+  """deprecated"""
+  global: Boolean
+}
+
+type DeliveryPhotos {
+  bakery: [String]
+  bowl: [String]
+  coffee: [String]
+  fridge: [String]
+  fruits: [String]
+  global: [String]
+  takeGlobal: [String]
+  individualSnacks: [String]
+  meal: [String]
+  sample: [String]
+  snacks: [String]
+  starter: [String]
+
+  """deprecated"""
+  distributeur: [String]
+  fruit: [String]
+  snackBox: [String]
+}
+
+type DeliveryTime {
+  updatedTime: String
+  arrivalTime: String
+  closureTime: String
+  start: String
+  stop: String
+}
+
+input DeliveryWhere {
+  mongoId: String
+  _id: String
+}
+
+type Discount {
+  active: Boolean
+  type: String
+  amount: Float
+  description: String
+  category: String
+}
+
+type DumpDbResponse {
+  dumpSuccess: Boolean!
+}
+
+type Equipment {
+  _id: String
+  mongoId: String
+  createdAt: String
+  updatedAt: String
+  name: String
+  categories: [EquipmentCategory]
+  brand: String
+  volume: String
+  fullname: String
+  suppliers: [EquipmentSupplier]
+  instock: Float
+  instockHistory: [InStockHistory]
+  price: Float
+  imagePath2: String
+  description: String
+  type: String
+  consigne: String
+  justInTime: Boolean
+  detailOrderSupply: String
+  mrAnanasSaying: String
+  externalInstallation: Boolean
+  hardInstallation: Boolean
+  softInstallation: Boolean
+  otherInstallation: Boolean
+  deliveryInstallation: Boolean
+  deliveryTime: Float
+  hidden: Boolean
+  height: Float
+  width: Float
+  length: Float
+  weight: Float
+  state: String
+  stateHistory: [StateHistory]
+  isAnnual: Boolean
+}
+
+type EquipmentCategory {
+  _id: String
+  mongoId: String
+  name: String
+  title: String
+  minPortion: Float
+  maxPortion: Float
+}
+
+type EquipmentSupplier {
+  _id: String
+  name: String
+  prices: [EquipmentSupplierPrice]
+}
+
+type EquipmentSupplierPrice {
+  value: Float
+  leasingMonthlyValue: Float
+  conditionning: Float
+}
+
+input EquipmentWhere {
+  mongoId: String
+  _id: String
+}
+
+type Feedback {
+  _id: String!
+  mongoId: String
+  createdAt: String
+  updatedAt: String
+  totemId: String
+  organizationId: String
+  total: FeedbackTotal
+  categories: [FeedbackCategory]
+  products: [FeedbackProduct]
+  isStale: Boolean
+}
+
+type FeedbackCategory {
+  categoryId: String
+  count: Int
+  mean: Int
+  like: Int
+  dislike: Int
+  outOfStock: Int
+  meta: [FeedbackDataMeta]
+  metaOutOfStock: [FeedbackDataMeta]
+}
+
+type FeedbackDataActions {
+  like: FeedbackDataActionsIndividual
+  dislike: FeedbackDataActionsIndividual
+  outOfStock: FeedbackDataActionsIndividual
+}
+
+type FeedbackDataActionsIndividual {
+  count: Int
+  meta: [FeedbackDataMeta]
+}
+
+type FeedbackDataMeta {
+  day: Int
+  hour: Int
+  count: Int
+  createdAt: String
+  updatedAt: String
+}
+
+type FeedbackProduct {
+  categoryId: String
+  productId: String
+  mean: Int
+  count: Int
+  actions: FeedbackDataActions
+  isStale: Boolean
+}
+
+type FeedbackTotal {
+  count: Int
+  mean: Int
+  like: Int
+  dislike: Int
+  outOfStock: Int
+}
+
+input FeedbackWhere {
+  mongoId: String
+  _id: String
+}
+
+input HandleInstallationsPriceInput {
+  orderId: String
+  installationsData: [JSON]
+}
+
+type Installation {
+  _id: String
+  mongoId: String
+  createdAt: String
+  updatedAt: String
+  signingDate: String
+  userId: String
+  totemNumber: Float
+  totemId: String
+  totem: Totem
+  updatedTotem: Totem
+  organization: Organization
+  number: Float
+  previous_installation: Installation
+  paymentId: String
+  month: String
+  organizationName: String
+  organizationId: String
+  first_installation: Boolean
+  services: InstallationService
+  equipments: [InstallationEquipment]
+  prices: InstallationPrice
+  state: String
+  stateHistory: [StateHistory]
+}
+
+type InstallationEquipment {
+  _id: String
+  mongoId: String
+  details: Equipment
+  filled: Float
+  name: String
+  capacity: Float
+  isAvailable: Boolean
+  quantityLastInstall: Int
+  quantity: Int
+  unitPrice: Float
+  priceSupplier: Float
+  priceTTC: Float
+  priceHT: Float
+  tva: Float
+  dateDelivery: String
+  dateRetrieval: String
+  prorataRatio: Float
+  categories: [InstallationEquipmentCategories]
+  type: String
+  imagePath2: String
+  isAnnual: Boolean
+}
+
+type InstallationEquipmentCategories {
+  _id: String
+  mongoId: String
+  name: String
+  title: String
+  minPortion: Int
+  maxPortion: Int
+}
+
+input InstallationInput {
+  signingDate: String
+  userId: String
+  totemNumber: Float
+  totemId: String
+  organizationId: String
+  number: Float
+  previous_installationId: String
+  paymentId: String
+  month: String
+  organizationName: String
+  first_installation: Boolean
+  state: String
+}
+
+type InstallationPrice {
+  services: InstallationPriceService
+  equipments: InstallationPriceEquipment
+  total: InstallationPriceTotal
+}
+
+type InstallationPriceEquipment {
+  quantity: Float
+  quantityLastInstall: Float
+  price: Float
+  priceHT: Float
+  priceTTC: Float
+  tva: Float
+}
+
+type InstallationPriceService {
+  price: Float
+  priceHT: Float
+  priceTTC: Float
+  tva: Float
+  discount: Float
+}
+
+type InstallationPriceTotal {
+  price: Float
+  priceHT: Float
+  priceTTC: Float
+  tva: Float
+  discount: Float
+}
+
+type InstallationService {
+  AM: InstallationServiceDetail
+  Delivery: InstallationServiceDetail
+  SAV: InstallationServiceDetail
+}
+
+type InstallationServiceDetail {
+  active: Boolean
+  price: Float
+  priceHT: Float
+  discount: Float
+  priceTTC: Float
+  tva: Float
+}
+
+input InstallationWhere {
+  mongoId: String
+  totemId: String
+  _id: String
+}
+
+type InStockHistory {
+  createdAt: String
+  value: Float
+}
+
+"""
+The `JSON` scalar type represents JSON values as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf).
+"""
+scalar JSON
+
+type Mutation {
+  """signin/signup"""
+  signin(email: String!, password: String!): AuthenticationInfo!
+  signup(data: Signup1Input!): AuthenticationInfo!
+  signup2(data: Signup2Input!): Organization!
+  signup3(data: Signup3Input!): Order!
+  signup4(budget: String!): String!
+
+  """reset (admin)"""
+  resetAdmin: User!
+
+  """validate/checkout"""
+  validate(data: ValidateInput): Order!
+  checkout(data: CheckoutInput!): Order!
+
+  """installation -> equipments"""
+  addSoftEquipments(orderId: String!, displayOnly: Boolean): Installation!
+  addEquipment(equipmentId: String!, orderId: String!, installationId: String!): Installation!
+  lessEquipment(equipmentId: String!, installationId: String!): Installation!
+  moreEquipment(equipmentId: String!, installationId: String!): Installation!
+  updateUser(data: JSON!, _id: String!): User!
+  dumpDB(collectionName: String, all: Boolean): DumpDbResponse!
+
+  """order -> products"""
+  addProduct(orderId: String!, productId: String!, adjustedProductsIds: JSON): Order!
+  removeProduct(orderId: String!, productId: String!): Order!
+  moreProduct(orderId: String!, productId: String!, adjustedProductsIds: JSON): Order!
+  lessProduct(orderId: String!, productId: String!, adjustedProductsIds: JSON): Order!
+  handleTastes(orderId: String!, conditioningTotem: Int!, tasteId: String!, selectedTastesId: JSON!): Order!
+  handleRepartition(orderId: String!): Order!
+
+  """order -> categories"""
+  addCategory(orderId: String!, categoryId: String!): Order!
+  removeCategory(orderId: String!, categoryId: String!): Order!
+  lessCategory(orderId: String!, categoryId: String!): Order!
+  moreCategory(orderId: String!, categoryId: String!): Order!
+
+  """order -> coworkers"""
+  updateCoworkers(orderId: String!, coworkers: Int!): Order!
+
+  """organization -> stripe"""
+  setDefaultSource(organizationId: String!, sourceId: String!): Organization!
+  insertStripeCustomer(organizationId: String!, paymentMethod: JSON!): StripeNewCustomerInfo!
+  insertStripeIbanCustomer(organizationId: String!, iban: String!): Organization!
+  updateCreditCards(organizationId: String!, stripeId: String!): Organization!
+  addStripeIban(organizationId: String!, iban: String!): Organization!
+  addStripeCard(organizationId: String!, paymentMethod: JSON!): Organization!
+  deleteIban(organizationId: String!, sourceId: String!): Organization!
+  deleteCard(organizationId: String!, sourceId: String!): Organization!
+
+  """organization -> octobat"""
+  createOctobatCustomer(organizationId: String!, organization: JSON, shouldUpdateOrg: Boolean): Organization!
+  upsertOctobatCustomer(organizationId: String!, shouldUpdateOrg: Boolean): Organization!
+
+  """update"""
+  updateOrganization(data: OrganizationInput!, _id: String!): Organization
+  updateOrder(data: OrderInput!, _id: String!): Order
+  updateInstallation(data: InstallationInput!, _id: String!): Installation
+  updateTotem(data: TotemInput!, _id: String!): Totem
+  updateOrganizationFields(data: JSON!): Organization!
+  updatePlan: JSON
+
+  """create"""
+  createOrganization(data: OrganizationInput!): Organization
+  createOrder(data: OrderInput!): Order
+  createInstallation(data: InstallationInput!): Installation
+  createTotem(data: TotemInput!): Totem
+
+  """rules"""
+  addRule(rule: RuleInput!): Rule
+  removeRule(ruleId: String!): Rule
+  updateRule(rule: RuleInput!): Rule
+
+  """totems"""
+  updateClientTotem(totemId: String!, data: TotemInput!): Totem!
+
+  """shaman functions"""
+  handleInstallationsPrice(data: HandleInstallationsPriceInput): [Installation]
+  handleOrganizationPlan(data: JSON): UpdatePlanType
+}
+
+type Operator {
+  _id: String!
+  mongoId: String!
+  createdAt: String
+  updatedAt: String
+  lastname: String
+  firstname: String
+  comment: String
+  fullname: String
+  type: String
+  appreciation: String
+  quote: String
+  phone: String
+  email: String
+  picture: String
+  urbantzId: String
+  state: String
+  stateHistory: [StateHistory]
+}
+
+input OperatorWhere {
+  mongoId: String
+  _id: String
+}
+
+type Order {
+  _id: String!
+  mongoId: String
+  createdAt: String
+  updatedAt: String
+  userId: String
+  userName: String
+  organization: Organization
+  totem: Totem
+  totemId: String
+  totemNumber: Int
+  paymentId: String
+  previous_order: Order
+  coworkers: Int
+  number: Int
+  date_delivery: String
+  first_date_delivery: String
+  first_order: Boolean
+  products(productId: String): [OrderProduct]
+  prices: [OrderPrices]
+  appreciation: String
+  badService: [String]
+  feedback: String
+  discount: JSON
+  display: JSON
+  categories(categoryId: String): [OrderCategory]
+  state: String
+  stateHistory: [StateHistory]
+  paymentType: String
+  breakday: Boolean
+  preferenceId: String
+  hour_delivery_preferences: String
+}
+
+type OrderCategory {
+  _id: String
+  mongoId: String
+  name: String
+  title: String
+  portion: Float
+  selectionTotem: Boolean
+  days_delivery_preferences: OrderDays
+  total: OrderCategoryTotal
+  price: Float
+  discount: JSON
+}
+
+type OrderCategoryTotal {
+  portion: Float
+  quantity: Float
+  price: Float
+  priceSupplier: Float
+}
+
+type OrderDays {
+  monday: Float
+  tuesday: Float
+  wednesday: Float
+  thursday: Float
+  friday: Float
+  saturday: Float
+}
+
+"""inputs"""
+input OrderInput {
+  userId: String
+  userName: String
+  organizationId: String
+  totemId: String
+  totemNumber: Int
+  paymentId: String
+  previous_orderId: String
+  coworkers: Int
+  number: Int
+  date_delivery: String
+  first_date_delivery: String
+  first_order: Boolean
+  appreciation: String
+  badService: [String]
+  feedback: String
+  state: String
+  paymentType: String
+  breakday: Boolean
+  preferenceId: String
+  hour_delivery_preferences: String
+}
+
+type OrderPrices {
+  price055: Float
+  price10: Float
+  price20: Float
+  discount055: Float
+  discount10: Float
+  discount20: Float
+  discount: Float
+  price: Float
+  priceHT055: Float
+  priceHT10: Float
+  priceHT20: Float
+  priceHT: Float
+  tva055: Float
+  tva10: Float
+  tva20: Float
+  tva: Float
+  priceTTC055: Float
+  priceTTC10: Float
+  priceTTC20: Float
+  priceTTC: Float
+}
+
+type OrderProduct {
+  _id: String
+  mongoId: String!
+  name: String
+  subcategoryId: String
+  subcategory: String
+  categoryId: String
+  category: String
+  price: Float
+  unitPrice: Float
+  priceSupplier: Float
+  unitPriceSupplier: Float
+  supplier: String
+  frequency: Float
+  pool: Float
+  portion: Float
+  portionDays: OrderDays
+  quantity: Float
+  quantityDays: OrderDays
+  imagePath2: String
+  unit: String
+  tasteId: String
+  taste: String
+  defaultTaste: Boolean
+}
+
+type OrdersOfOrganization {
+  orders: [Order]
+  uniqueCategories: [JSON]
+}
+
+type OrderSupply {
+  _id: String!
+  mongoId: String!
+  createdAt: String
+  updatedAt: String
+  number: Int
+  paymentId: String
+  supplierId: String
+  products: [OrderSupplyProduct]
+  day: String
+  priceHTScheduled: Float
+  priceTTCScheduled: Float
+  priceHT: Float
+  priceTTC: Float
+  totalQuantity: Float
+  totalQuantityReceived: Float
+  dateDeliveryScheduled: String
+  dateDelivery: String
+  hourDelivery: String
+  description: String
+  issue: Boolean
+  justInTime: Boolean
+  state: String
+  stateHistory: [StateHistory]
+  updatedBy: String
+  orderDate: String
+  priceHTInvoice: Float
+  priceTTCInvoice: Float
+  dateBilling: String
+  datePayment: String
+  invoiceNumber: String
+}
+
+type OrderSupplyProduct {
+  _id: String
+  name: String
+  quantity: Float
+  quantityReceived: Float
+  price: Float
+  unitPrice: Float
+  colis: Float
+  colisReceived: Float
+}
+
+input OrderSupplyWhere {
+  mongoId: String
+  _id: String
+}
+
+input OrderWhere {
+  mongoId: String
+  totemId: String
+  state_not_in: [String]
+  _id: String
+}
+
+type Organization {
+  _id: String!
+  mongoId: String
+  createdAt: String
+  updatedAt: String
+  name: String
+  description: String
+  picture: String
+  customer: Boolean
+  dateFirstOrder: String
+  admin: Boolean
+  test: Boolean
+  maxUsers: Int
+  cgv: Boolean
+  totemUpdate: Boolean
+  zendeskId: String
+  octobatId: String
+  stripeId: String
+  salesforceId: String
+  coworkers: Int
+  totalCoworkers: Int
+  coworkersRange: String
+  invoiceName: String
+  invoiceEmail: String
+  invoiceAddress: String
+  invoiceZipcode: String
+  invoiceCity: String
+  invoiceCountry: String
+  invoiceLatitude: Float
+  invoiceLongitude: Float
+  invoiceStreet: String
+  invoiceStreetNumber: String
+  invoicePO: String
+  invoiceVAT: String
+  salesId: String
+  accountManagerId: String
+  sdrId: String
+  salesActivity: JSON
+  channel: String
+  signupFrom: String
+  signup: JSON
+  cards: JSON
+  paymentTimeType: String
+  paymentTimeDays: Int
+  paymentType: String
+  mandateSEPA: String
+  coefficientTotem: Float
+  fixPriceCoworkers: Float
+  variablePriceCoworkers: Float
+  ageRange: String
+  turnover: String
+  industry: String
+  budget: String
+  genderPop: String
+  accountingNumber: String
+  state: String
+  stateHistory: [StateHistory]
+  defaultSource: String
+  utmContent: String
+  utmTerm: String
+  utmCampaign: String
+  utmMedium: String
+  utmSource: String
+  gclid: String
+}
+
+type OrganizationCards {
+  id: String
+  object: String
+  billing_details: BillingDetails
+  client_secret: String
+  created: Int
+  currency: String
+  customer: String
+  flow: String
+  livemode: Boolean
+  mandate: JSON
+  metadata: JSON
+  owner: JSON
+  sepa_debit: OrganizationCardsSepa
+  card: OrganizationCardsCard
+  status: String
+  type: String
+  usage: String
+}
+
+type OrganizationCardsCard {
+  brand: String
+  country: String
+  exp_month: Int
+  exp_year: Int
+  fingerprint: String
+  checks: JSON
+  funding: String
+  last4: String
+  three_d_secure_usage: JSON
+}
+
+type OrganizationCardsSepa {
+  last4: String
+  bank_code: String
+  fingerprint: String
+  country: String
+  mandate_reference: String
+  mandate_url: String
+}
+
+"""inputs"""
+input OrganizationInput {
+  name: String
+  description: String
+  picture: String
+  customer: Boolean
+  dateFirstOrder: String
+  admin: Boolean
+  test: Boolean
+  maxUsers: Int
+  cgv: Boolean
+  totemUpdate: Boolean
+  zendeskId: String
+  octobatId: String
+  stripeId: String
+  salesforceId: String
+  coworkers: Int
+  totalCoworkers: Int
+  coworkersRange: String
+  invoiceName: String
+  invoiceEmail: String
+  invoiceAddress: String
+  invoiceZipcode: String
+  invoiceCity: String
+  invoiceCountry: String
+  invoiceLatitude: Float
+  invoiceLongitude: Float
+  invoiceStreet: String
+  invoiceStreetNumber: String
+  invoicePO: String
+  invoiceVAT: String
+  salesId: String
+  accountManagerId: String
+  sdrId: String
+  salesActivity: JSON
+  channel: String
+  signupFrom: String
+  signup: JSON
+  cards: JSON
+  paymentTimeType: String
+  paymentTimeDays: Int
+  paymentType: String
+  mandateSEPA: String
+  domainName: String
+  website: String
+  siret: String
+  codeNaf: String
+  organizationRevenue: Float
+  organizationRevenueCoworkers: Float
+  coefficientTotem: Float
+  fixPriceCoworkers: Float
+  variablePriceCoworkers: Float
+  ageRange: String
+  turnover: String
+  industry: String
+  budget: String
+  genderPop: String
+  accountingNumber: String
+  state: String
+}
+
+input OrganizationWhere {
+  name_contains: String
+  mongoId: String
+}
+
+type Partnership {
+  _id: String!
+  mongoId: String!
+  createdAt: String
+  name: String
+  companyName: String
+  logo: String
+  discount: Float
+  state: String
+  stateHistory: [StateHistory]
+  updatedAt: String
+  discountTime: Int
+}
+
+input PartnershipWhere {
+  mongoId: String
+  _id: String
+}
+
+type Payment {
+  _id: String!
+  mongoId: String!
+  createdAt: String
+  updatedAt: String
+  updateAt: String
+  paymentType: String
+  chargeStripeId: String
+  customerStripeId: String
+  amountTTC: Float
+  amountHT: Float
+  currency: String
+  state: String
+  stateHistory: [StateHistory]
+  orders: [PaymentOrder]
+  invoiceUrl: String
+  invoiceId: String
+  invoiceNumber: Int
+  customerOctobatId: String
+  datePaymentScheduled: String
+  datePayment: String
+  amountHT055: Float
+  amountHT10: Float
+  amountHT20: Float
+  amountTVA055: Float
+  amountTVA10: Float
+  amountTVA20: Float
+  amountTVA: Float
+  invoiceDate: String
+  organizationId: String
+  installations: [PaymentInstallation]
+}
+
+type PaymentInstallation {
+  _id: String
+  number: Int
+  priceHT: Int
+  priceTTC: Int
+  totemId: String
+  totemNumber: Int
+  userId: String
+}
+
+type PaymentOrder {
+  _id: String
+  number: Int
+  priceHT: Float
+  priceTTC: Float
+  totemId: String
+  totemNumber: Int
+  userId: String
+}
+
+type PaymentSupply {
+  _id: String!
+  mongoId: String
+  createdAt: String
+  updatedAt: String
+  paymentType: String
+  supplierId: String
+  ordersSupply: [PaymentSupplyOrdersSupply]
+  dateOrder: String
+  dateBilling: String
+  priceHTScheduled: Float
+  priceTTCScheduled: Float
+  priceHT: Float
+  priceTTC: Float
+  datePaymentScheduled: String
+  datePayment: String
+  state: String
+  stateHistory: [StateHistory]
+  invoiceNumber: String
+  invoicePath: String
+  note: String
+}
+
+type PaymentSupplyOrdersSupply {
+  _id: String
+  number: Int
+  priceHT: Float
+  priceTTC: Float
+}
+
+input PaymentSupplyWhere {
+  mongoId: String
+  _id: String
+}
+
+input PaymentWhere {
+  mongoId: String
+  _id: String
+}
+
+type Post {
+  _id: String!
+  mongoId: String!
+  createdAt: String
+  organizationId: String
+  orderId: String
+  totemId: String
+  currentUser: [PostCurrentUser]
+  type: String
+  subtype: String
+  rank: String
+  appreciation: Int
+  roles: [PostRoles]
+  deliveryId: String
+  feedbackId: String
+  body: String
+}
+
+type PostCurrentUser {
+  _id: String
+  createdAt: String
+  services: [PostCurrentUserServices]
+  username: String
+  emails: [PostCurrentUserServicesEmails]
+  profile: [PostCurrentUserServicesProfile]
+  lastSeenAt: String
+  updatedAt: String
+  roles: [PostCurrentUserRoles]
+}
+
+type PostCurrentUserRoles {
+  ordersSupply: [String]
+  paymentsSupply: [String]
+  orders: [String]
+  products: [String]
+  packaging: [String]
+  stock: [String]
+  suppliers: [String]
+  knowledges: [String]
+  deliveries: [String]
+  organizations: [String]
+  settings: [String]
+  admin: [String]
+
+  """J5QoQxuMQ25BAxSaY: [String] ??"""
+  totems: [String]
+  operators: [String]
+  bundles: [String]
+}
+
+type PostCurrentUserServices {
+  password: [PostCurrentUserServicesPassword]
+  resume: [PostCurrentUserServicesResume]
+}
+
+type PostCurrentUserServicesEmails {
+  address: String
+  verified: Boolean
+}
+
+type PostCurrentUserServicesPassword {
+  bcrypt: String
+}
+
+type PostCurrentUserServicesProfile {
+  note: String
+  visited: Boolean
+  description: String
+  phone: String
+  admin: Boolean
+  test: Boolean
+  state: String
+  stateHistory: [StateHistory]
+  paymentTimeType: String
+  messagesPerso: [String]
+  onboarding: [PostCurrentUserServicesProfileOnBoarding]
+  organizationId: String
+  picture: String
+  friend: Boolean
+  zendeskId: String
+  jobTitle: String
+  firstname: String
+  lastname: String
+  fullname: String
+  jobType: String
+  buyingRole: String
+  language: String
+  salesforceId: String
+  ordersOfUser: Int
+  allOrdersOfOrganization: Int
+  score: Int
+  newsletter: Boolean
+}
+
+type PostCurrentUserServicesProfileOnBoarding {
+  step1: Boolean
+  step2: Boolean
+  step3: Boolean
+}
+
+type PostCurrentUserServicesResume {
+  loginTokens: [PostCurrentUserServicesResumeLoginTokens]
+}
+
+type PostCurrentUserServicesResumeLoginTokens {
+  when: String
+  hashedToken: String
+}
+
+type PostRoles {
+  Admin: Int
+  Employee: Int
+  ReadWrite: Int
+  ReadOnly: Int
+}
+
+input PostWhere {
+  mongoId: String
+  _id: String
+}
+
+type Product {
+  _id: String
+  mongoId: String
+  createdAt: String
+  updatedAt: String
+  updatedBy: String
+  name: String
+  fullname: String
+  category: Category
+  categoryId: String
+  brand: String
+  volume: String
+  suppliers: [ProductSupplier]
+  instock: Float
+  instockHistory: [InStockHistory]
+  tags: [ProductTags]
+  price: Float
+  imagePath: String
+  imagePath2: String
+  unit: String
+  state: String
+  stateHistory: [StateHistory]
+  description: String
+  freshProduct: Boolean
+  portion: Float
+  detailOrderSupply: String
+  consigne: String
+  justInTime: Boolean
+  perishable: Boolean
+  descriptionPack: [String]
+  selectionTotem: Boolean
+  conditionningTotem: Float
+  mrAnanasSaying: String
+  proportion: Float
+  proportionMax: Float
+  stockThreshold: Float
+  index: Float
+  indexDisplay: Float
+  dispenserFriendly: Boolean
+  dispenserMaxPortion: Float
+  cerealsFriendly: Boolean
+  height: Float
+  width: Float
+  length: Float
+  location: String
+  weight: Float
+  weightWithoutPackaging: Float
+  forcast: ProductForcast
+  badges: ProductBadge
+  nutrition: ProductNutrition
+  allergen: ProductAllergen
+  defaultTaste: Boolean
+  tasteId: String
+  taste: String
+  ingredients: String
+  access: [String]
+  deliveryDays: DeliveryDay
+  tva: Float
+  displayKg: Boolean
+  doNotTrackStock: Boolean
+  flow: String
+  barcode: String
+  nutriscore: String
+  tastesOfProduct: [JSON]
+}
+
+type ProductAllergen {
+  gluten: Boolean
+  crustaceans: Boolean
+  eggs: Boolean
+  fish: Boolean
+  peanuts: Boolean
+  soybeans: Boolean
+  milk: Boolean
+  nuts: Boolean
+  celery: Boolean
+  mustard: Boolean
+  sesame: Boolean
+  sulphites: Boolean
+  lupin: Boolean
+  molluscs: Boolean
+  canContain: String
+}
+
+type ProductBadge {
+  bio: Boolean
+  vegan: Boolean
+  withoutGluten: Boolean
+  madeInFrance: Boolean
+  withoutSugar: Boolean
+  fairTrade: Boolean
+  bulk: Boolean
+}
+
+type ProductForcast {
+  test: String
+}
+
+type ProductNutrition {
+  caloriesKCal: String
+  caloriesKJ: String
+  totalFat: String
+  sturatedFat: String
+  carbohydrates: String
+  sugars: String
+  fibers: String
+  protein: String
+  sodium: String
+}
+
+type ProductPrice {
+  value: Float
+  conditionning: Float
+}
+
+type ProductSupplier {
+  name: String
+  _id: String
+  prices: [ProductPrice]
+}
+
+type ProductTags {
+  _id: String
+  name: String
+}
+
+input ProductWhere {
+  mongoId: String
+  name_contains: String
+  categoryId: String
+  tasteId: String
+}
+
+type Query {
+  user: User
+  users(where: UserWhere): [User]
+  products(where: ProductWhere): [Product]
+  feedbacks(where: FeedbackWhere): [Feedback]
+  orders(where: OrderWhere): [Order]
+  ordersOfUser(totemId: String!, state_not_in: [String!]): [Order]
+  orderProducts(orderId: String!): [OrderProduct]
+  totemEquipments(totemId: String!): [InstallationEquipment]
+  ordersOfOrganization(state_not_in: [String!]): OrdersOfOrganization
+  ordersSupply(where: OrderSupplyWhere): [OrderSupply]
+  organizations(where: OrganizationWhere): [Organization]
+  totems(where: TotemWhere): [Totem]
+  totemsOfUser: [Totem]
+  organizationOfUser: Organization!
+  installations(where: InstallationWhere): [Installation]
+  installationsOfOrganization: [Installation]
+  payments(where: PaymentWhere): [Payment]
+  paymentsSupply(where: PaymentSupplyWhere): [PaymentSupply]
+  posts(where: PostWhere): [Post]
+  suppliers(where: SupplierWhere): [Supplier]
+  equipments(where: EquipmentWhere): [Equipment]
+  categories(where: CategoryWhere): [Category]
+  deliveries(where: DeliveryWhere): [Delivery]
+  partnerships(where: PartnershipWhere): [Partnership]
+  bundles(where: BundleWhere): [Bundle]
+  operators(where: OperatorWhere): [Operator]
+  subcategories(where: SubcategoryWhere): [Subcategory]
+  getInvoices(octobatId: String!): JSON!
+}
+
+type Rule {
+  _id: String!
+  name: String!
+  access: [String]!
+}
+
+input RuleInput {
+  name: String
+  access: [String]
+}
+
+input Signup1Input {
+  email: String!
+  password: String!
+  signupFrom: String!
+  utmSource: String!
+  utmMedium: String!
+  utmCampaign: String!
+  utmTerm: String!
+  utmContent: String!
+  userRefferrerId: String
+}
+
+input Signup2Input {
+  zipcode: String!
+  organizationName: String!
+  industry: String!
+}
+
+input Signup3Input {
+  firstName: String!
+  lastName: String!
+  phoneNumber: String!
+  jobTitle: String!
+}
+
+type StateHistory {
+  createdAt: String
+  state: String
+}
+
+type StripeNewCustomerInfo {
+  clientSecret: String!
+  stripeId: String!
+}
+
+type Subcategory {
+  _id: String
+  mongoId: String!
+  createdAt: String
+  updatedAt: String
+  name: String
+  description: String
+  category: String
+  unit: String
+  categoryId: String
+  private: Boolean
+  state: String
+  stateHistory: [StateHistory]
+  index: Int
+  bowl: Boolean
+  organizations: [String]
+  type: String
+}
+
+input SubcategoryWhere {
+  mongoId: String
+  _id: String
+}
+
+type Supplier {
+  _id: String!
+  mongoId: String!
+  createdAt: String
+  updatedAt: String
+  name: String
+  phone: String
+  address: String
+  zipcode: Int
+  website: String
+  description: String
+  categories: [String]
+  orderMode: String
+  orderTemplate: String
+  frequency: Int
+  franco: Int
+  deliveryTime: String
+  deliveryDays: [SupplierDeliveryDays]
+  contacts: [SupplierContact]
+  paymentTimeType: String
+  paymentTimeDays: Int
+  paymentType: String
+  invoiceTimeType: String
+  deliveryFormType: String
+  deliveryPrice: Int
+  tva: Float
+  state: String
+  stateHistory: [StateHistory]
+}
+
+type SupplierContact {
+  name: String
+  surname: String
+  phone: String
+  email: String
+  description: String
+}
+
+"""type SupplierCategory {}"""
+type SupplierDeliveryDays {
+  monday: Int
+  tuesday: Int
+  wednesday: Int
+  thursday: Int
+  friday: Int
+}
+
+input SupplierWhere {
+  mongoId: String
+  _id: String
+}
+
+type Totem {
+  _id: String
+  mongoId: String!
+  createdAt: String
+  updatedAt: String
+  organization: Organization
+  organizationId: String
+  userId: String
+  mainUserId: String
+  number: Int
+  subscription: String
+  dateFirstOrder: String
+  dateFirstInstallation: String
+  salesforceId: String
+  dateSubscription: String
+  picture: String
+  maxBudgetPerPerson: Float
+  maxGlobalBudget: Float
+  maxWeeklyBudget: Float
+  address: String
+  address_details: String
+  zipcode: String
+  city: String
+  country: String
+  street: String
+  streetNumber: String
+  latitude: Float
+  longitude: Float
+  hour_delivery_preferences_start: String
+  hour_delivery_preferences_stop: String
+  hour_delivery_preferences_start2: String
+  hour_delivery_preferences_stop2: String
+  days_delivery_preferences: JSON
+  minAmount: Float
+  minCoworkers: Int
+  consigneSpeciale: JSON
+  consigneDelivery: String
+  serviceTime: Float
+  discount: JSON
+  paused: JSON
+  type: String
+  state: String
+  stateHistory: [StateHistory]
+  packsNumber: Float
+  hasAcceptedCgv: Boolean
+  employeeAccessProducts: JSON
+  employeeAccessCategories: JSON
+  pictureOnsite: String
+  packNumber: Int
+  hasIpad: Boolean
+}
+
+input TotemInput {
+  organizationId: String
+  userId: String
+  mainUserId: String
+  number: Int
+  subscription: String
+  dateFirstOrder: String
+  dateFirstInstallation: String
+  salesforceId: String
+  dateSubscription: String
+  picture: String
+  maxBudgetPerPerson: Float
+  maxGlobalBudget: Float
+  maxWeeklyBudget: Float
+  address: String
+  address_details: String
+  zipcode: String
+  city: String
+  country: String
+  street: String
+  streetNumber: String
+  latitude: Float
+  longitude: Float
+  hour_delivery_preferences_start: String
+  hour_delivery_preferences_stop: String
+  hour_delivery_preferences_start2: String
+  hour_delivery_preferences_stop2: String
+  days_delivery_preferences: JSON
+  minAmount: Float
+  minCoworkers: Int
+  consigneSpeciale: JSON
+  consigneDelivery: String
+  serviceTime: Float
+  paused: JSON
+  type: String
+  state: String
+  packsNumber: Float
+  hasAcceptedCgv: Boolean
+  primaryTotemId: String
+  needSignature: Boolean
+}
+
+input TotemWhere {
+  name_contains: String
+  _id: String
+  mongoId: String
+  organizationId: String
+}
+
+type UpdatePlanType {
+  success: Boolean
+  error: JSON
+}
+
+type User {
+  _id: String
+  mongoId: String!
+  createdAt: String
+  updatedAt: String
+  lastSeenAt: String
+  profile: UserProfile
+  emails: JSON
+  username: String
+  roles: JSON
+  organization: Organization
+}
+
+input UserInput {
+  lastSeenAt: String
+  profile: UserProfileInput
+  emails: JSON
+  username: String
+  roles: JSON
+}
+
+type UserProfile {
+  organizationId: String
+  zendeskId: String
+  salesforceLeadId: String
+  salesforceId: String
+  description: String
+  note: String
+  lastname: String
+  firstname: String
+  fullname: String
+  jobTitle: String
+  phone: String
+  jobType: String
+  buyingRole: String
+  language: String
+  state: String
+  stateHistory: [StateHistory]
+  ordersOfUser: Int
+  allOrdersOfOrganization: Int
+  score: Float
+  visited: Boolean
+  admin: Boolean
+  test: Boolean
+  onboarding: JSON
+  picture: String
+}
+
+input UserProfileInput {
+  organizationId: String
+  zendeskId: String
+  salesforceLeadId: String
+  salesforceId: String
+  description: String
+  note: String
+  lastname: String
+  firstname: String
+  fullname: String
+  jobTitle: String
+  phone: String
+  jobType: String
+  buyingRole: String
+  language: String
+  state: String
+  ordersOfUser: Int
+  allOrdersOfOrganization: Int
+  score: Float
+  visited: Boolean
+  admin: Boolean
+  test: Boolean
+  onboarding: JSON
+  picture: String
+}
+
+input UserWhere {
+  _id: String
+  name_contains: String
+  username: String
+  mongoId: String
+}
+
+input ValidateInput {
+  orderId: String!
+  oldState: String!
+}
