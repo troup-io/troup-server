@@ -22,6 +22,11 @@ export const Query = {
         return ctx.prisma.post({ id });
     },
 
+    posts(parent, args, ctx: Context) {
+        const id = getUserId(ctx);
+        return ctx.prisma.posts({ where: { author: { id } } });
+    },
+
     me(parent, args, ctx: Context) {
         const id = getUserId(ctx);
         return ctx.prisma.user({ id });
