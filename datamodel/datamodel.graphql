@@ -13,5 +13,11 @@ type User {
     email: String! @unique
     password: String!
     name: String!
-    posts: [Post!]!
+}
+
+enum Role {
+    SUPER_ADMIN
+    ADMIN
+    MODERATOR
+    CONTRIBUTOR
 }
