@@ -7,10 +7,11 @@
     "repository": "git@github.com:troup-io/troup-server.git",
     "scripts": {
         "bs:install": "yarn install",
-        "bs:docker-compose": "(cd database && docker-compose up -d)",
+        "bs:docker-compose": "(cd prisma && docker-compose up -d)",
         "bs:prisma-deploy": "dotenv -- yarn prisma deploy --project database/prisma.yml",
         "bootstrap": "npm-run-all bs:install bs:docker-compose bs:prisma-deploy start",
         "start": "dotenv -- nodehawk",
+        "generate-typings": "ts-node --transpile-only src/schema",
         "debug": "dotenv -- nodehawk",
         "lint": "eslint . --ext .ts,.json,.js --ignore-pattern 'src/generated'",
         "build": "rimraf dist && tsc",
