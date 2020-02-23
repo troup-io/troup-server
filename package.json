@@ -20,11 +20,12 @@
         "semver": "npm version"
     },
     "resolutions": {
-        "graphql": "14.3.0"
+        "graphql": "14.6.0"
     },
     "dependencies": {
         "@prisma/client": "^2.0.0-preview022",
         "bcryptjs": "2.4.3",
+        "graphql": "^14.6.0",
         "graphql-shield": "^7.0.13",
         "graphql-yoga": "^1.18.3",
         "jsonwebtoken": "8.5.1",
