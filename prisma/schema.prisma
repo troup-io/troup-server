@@ -10,24 +10,147 @@ generator client {
     provider = "prisma-client-js"
 }
 
-model User {
-    id       String @id
-    email    String @unique
-    password String
-    name     String
-    role     Role   @default(CONTRIBUTOR)
+// Troup Model
+model Troup {
+    id        String       @id @default(cuid())
+    createdAt DateTime     @default(now())
+    updatedAt DateTime     @updatedAt
+    members   Int          @default(1)
+    profile   TroupProfile
 }
 
+model TroupProfile {
+    id         String   @id @default(cuid())
+    createdAt  DateTime @default(now())
+    updatedAt  DateTime @updatedAt
+    name       String
+    adminEmail String?
+    address    String?
+}
+
+// User Models
+model User {
+    id               String      @id @default(cuid())
+    createdAt        DateTime    @default(now())
+    updatedAt        DateTime    @updatedAt
+    email            String      @unique
+    password         String
+    profile          UserProfile
+    role             Role        @default(CONTRIBUTOR)
+    teams            Troup[]
+    createdTodos     TodoTask[]  @relation("_Todo_Task_Author")
+    contributedTodos TodoTask[]  @relation("_Todo_Task_Contributor")
+    ownedTodos       TodoTask[]  @relation("_Todo_Task_Owner")
+    createdPosts     Post[]      @relation("_Post_Author")
+    contributedPosts Post[]      @relation("_Post_Contributor")
+
+}
+
+model UserProfile {
+    id                     String   @id @default(cuid())
+    createdAt              DateTime @default(now())
+    updatedAt              DateTime @updatedAt
+    firstName              String
+    lastName               String
+    professionalCompetence String?
+    referral               User?
+    utm_source             String?
+    utm_campaign           String?
+    utm_medium             String?
+    utm_term               String?
+    utm_content            String?
+}
+
+// Post Models
 model Post {
-    id        String   @id
+    id              String            @id @default(cuid())
+    createdAt       DateTime          @default(now())
+    updatedAt       DateTime          @updatedAt
+    published       Boolean?          @default(value: false)
+    title           String
+    content         String
+    label           Label[]
+    author          User              @relation("_Post_Author")
+    contributors    User[]            @relation("_Post_Contributor")
+    troup           Troup             @relation("_Post_Parent")
+    revisionHistory RevisionHistory[]
+}
+
+model Comment {
+    id              String            @id @default(cuid())
+    createdAt       DateTime          @default(now())
+    updatedAt       DateTime          @updatedAt
+    content         String            @default("")
+    troup           Troup
+    author          User
+    post            Post              @relation("_Comment_Parent")
+    revisionHistory RevisionHistory[]
+}
+
+// Todo Models
+model Todo {
+    id        String       @id @default(cuid())
+    createdAt DateTime     @default(now())
+    updatedAt DateTime     @updatedAt
+    members   User[]
+    columns   TodoColumn[]
+}
+
+model TodoColumn {
+    id              String            @id @default(cuid())
+    createdAt       DateTime          @default(now())
+    updatedAt       DateTime          @updatedAt
+    name            String
+    revisionHistory RevisionHistory[]
+}
+
+model TodoTask {
+    id           String   @id @default(cuid())
+    createdAt    DateTime @default(now())
+    updatedAt    DateTime @updatedAt
+    author       User     @relation("_Todo_Task_Author")
+    assignee     User     @relation("_Todo_Task_Owner")
+    contributors User[]   @relation("_Todo_Task_Contributor")
+    state        State    @default(ACTIVE)
+}
+
+// Supporting models
+model Label {
+    id        String    @id @default(cuid())
+    createdAt DateTime  @default(now())
+    updatedAt DateTime  @updatedAt
+    title     String
+    color     String
+    type      LabelType @default(GLOBAL)
+    troup     Troup
+    todo      Todo?
+}
+
+model RevisionHistory {
+    id        String   @id @default(cuid())
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
-    published Boolean  @default(value: false)
-    title     String
-    content   String
-    author    User
+    content   String   @default("")
+    updatedBy User
 }
 
+model StateHistory {
+    id        String   @id @default(cuid())
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+    state     State    @default(ACTIVE)
+}
+
+
+// Enums
 enum Role {
     SUPER_ADMIN ADMIN MODERATOR CONTRIBUTOR
+}
+
+enum State {
+    ACTIVE INACTIVE CHURNING ARCHIVED
+}
+
+enum LabelType {
+    GLOBAL SPECIFIC
 }
