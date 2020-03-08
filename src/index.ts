@@ -10,7 +10,7 @@ import * as jwt from 'jsonwebtoken';
 import { formatError } from 'lib/formatError';
 import { formatResponse } from 'lib/formatResponse';
 
-import { schema } from './schema';
+import { schema } from 'schema';
 
 config();
 

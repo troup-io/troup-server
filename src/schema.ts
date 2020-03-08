@@ -2,7 +2,7 @@ import * as path from 'path';
 import { makeSchema } from 'nexus';
 import { nexusPrismaPlugin } from 'nexus-prisma';
 
-import types from './resolvers';
+import types from 'resolvers';
 
 export const schema = makeSchema({
     types,
