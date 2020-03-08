@@ -15,6 +15,9 @@ export async function checkPasswordMatch(
     return await bcrypt.compare(password, user.password);
 }
 
-export function checkUserTroup(user: UserGetSelectPayload<{ troups: true }>, troupId): boolean {
+export function checkUserTroup(
+    user: UserGetSelectPayload<{ troups: true }>,
+    troupId: string
+): boolean {
     return user.troups.some(troup => troup.id === troupId);
 }
