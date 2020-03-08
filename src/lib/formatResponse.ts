@@ -2,7 +2,11 @@
 
 export function formatResponse(response) {
     const success = !!response.data;
-    const data = response.data ? Object.values(response.data).pop() : response.data;
+    let data: any = response.data;
+
+    if (data && !data?.__schema) {
+        data = data ?? Object.values(data).pop();
+    }
 
     return {
         success,
