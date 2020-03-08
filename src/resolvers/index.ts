@@ -1,17 +1,13 @@
-import { Query } from './Query';
-import { Subscription } from './Subscription';
-import { auth } from './Mutation/auth';
-import { post } from './Mutation/post';
-import { User } from './User';
-import { Post } from './Post';
+import * as Models from './Models';
+import * as Query from './Queries';
+import * as Mutation from './Mutations';
+import * as Types from './Types';
+// import * as Subscription from './Subscriptions';
 
 export default {
     Query,
-    Mutation: {
-        ...auth,
-        ...post,
-    },
-    Subscription,
-    User,
-    Post,
+    Mutation,
+    // Subscription,
+    ...Models,
+    ...Types,
 };
