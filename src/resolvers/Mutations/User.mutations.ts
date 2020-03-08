@@ -2,7 +2,7 @@ import * as bcrypt from 'bcryptjs';
 import * as jwt from 'jsonwebtoken';
 import { ObjectDefinitionBlock, stringArg } from 'nexus/dist/core';
 
-import { Context } from 'utils';
+import { Context, checkPasswordMatch, checkUserTroup } from '../../utils';
 
 export function UserMutation(t: ObjectDefinitionBlock<'Mutation'>) {
     t.field('signup', {
@@ -13,6 +13,7 @@ export function UserMutation(t: ObjectDefinitionBlock<'Mutation'>) {
             password: stringArg({ required: true }),
             firstName: stringArg({ required: true }),
             lastName: stringArg({ required: true }),
+            context: stringArg({ required: true }),
         },
         async resolve(_, { email, password, firstName, lastName }, ctx: Context) {
             const hashedPassword = await bcrypt.hash(password, 10);
@@ -48,17 +49,25 @@ export function UserMutation(t: ObjectDefinitionBlock<'Mutation'>) {
         args: {
             email: stringArg({ required: true }),
             password: stringArg({ required: true }),
+            context: stringArg({ required: true }),
         },
-        async resolve(_, { email, password }, ctx: Context) {
-            const user = await ctx.prisma.user.findOne({ where: { email } });
+        async resolve(_, { email, password, context }, ctx: Context) {
+            const user = await ctx.prisma.user.findOne({
+                where: { email },
+                include: {
+                    troups: true,
+                },
+            });
 
             if (!user) {
                 throw new Error(`No such user found for email: ${email}`);
             }
 
-            const valid = await bcrypt.compare(password, user.password);
+            if (checkUserTroup(user, context)) {
+                throw new Error(`User (${email}) is not a member of this Troup.`);
+            }
 
-            if (!valid) {
+            if (!(await checkPasswordMatch(user, password))) {
                 throw new Error('Invalid password');
             }
 
