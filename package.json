@@ -12,7 +12,7 @@
         "bs:prisma-deploy": "dotenv -- yarn prisma deploy --project database/prisma.yml",
         "bootstrap": "npm-run-all bs:install bs:docker-compose bs:prisma-deploy start",
         "start": "dotenv -- nodehawk",
-        "generate-typings": "ts-node --transpile-only src/schema",
+        "generate-typings": "ts-node --transpile-only -C ttypescript src/schema",
         "debug": "dotenv -- nodehawk",
         "lint": "eslint . --ext .ts,.json,.js",
         "build": "rimraf dist && tsc",
@@ -42,6 +42,7 @@
         "@types/node": "13.7.4",
         "@typescript-eslint/eslint-plugin": "2.20.0",
         "@typescript-eslint/parser": "2.20.0",
+        "@zerollup/ts-transform-paths": "^1.7.12",
         "dotenv-cli": "3.1.0",
         "eslint": "6.8.0",
         "eslint-config-prettier": "6.10.0",
@@ -51,6 +52,7 @@
         "prisma2": "^2.0.0-preview023",
         "rimraf": "3.0.2",
         "ts-node": "8.6.2",
+        "ttypescript": "^1.5.10",
         "typescript": "3.8.2",
         "yarn-run-all": "3.1.1"
     }

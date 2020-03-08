@@ -3,5 +3,5 @@
         "src",
         ".env"
     ],
-    "exec": "ts-node src/index.ts"
+    "exec": "ts-node -C ttypescript src/index.ts"
 }

@@ -2,7 +2,7 @@ import * as bcrypt from 'bcryptjs';
 import * as jwt from 'jsonwebtoken';
 import { ObjectDefinitionBlock, stringArg } from 'nexus/dist/core';
 
-import { Context, checkPasswordMatch, checkUserTroup } from '../../utils';
+import { Context, checkPasswordMatch, checkUserTroup } from 'utils';
 
 export function UserMutation(t: ObjectDefinitionBlock<'Mutation'>) {
     t.field('signup', {
@@ -63,7 +63,7 @@ export function UserMutation(t: ObjectDefinitionBlock<'Mutation'>) {
                 throw new Error(`No such user found for email: ${email}`);
             }
 
-            if (checkUserTroup(user, context)) {
+            if (!checkUserTroup(user, context)) {
                 throw new Error(`User (${email}) is not a member of this Troup.`);
             }
 
