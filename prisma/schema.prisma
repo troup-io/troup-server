@@ -26,6 +26,7 @@ model TroupProfile {
     name       String
     adminEmail String?
     address    String?
+    troup      Troup
 }
 
 // User Models
@@ -43,7 +44,6 @@ model User {
     ownedTodos       TodoTask[]  @relation("_Todo_Task_Owner")
     createdPosts     Post[]      @relation("_Post_Author")
     contributedPosts Post[]      @relation("_Post_Contributor")
-
 }
 
 model UserProfile {
