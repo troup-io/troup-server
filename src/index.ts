@@ -1,39 +1,30 @@
 import { config } from 'dotenv';
 import { GraphQLServer } from 'graphql-yoga';
-import { PrismaClient } from '@prisma/client';
+import { applyMiddleware } from 'graphql-middleware';
 import * as helmet from 'helmet';
-// import { rule, shield, and, or, not } from 'graphql-shield';
-// import * as bodyParser from 'body-parser';
-import { ClientRequestArgs } from 'http';
-import * as jwt from 'jsonwebtoken';
 
-import { formatError } from 'lib/formatError';
-import { formatResponse } from 'lib/formatResponse';
+import { PrismaClient } from '@prisma/client';
 
-import { schema } from 'schema';
+import { formatError } from '@lib/formatError';
+import { formatResponse } from '@lib/formatResponse';
+import { authorization } from '@lib/auth-middleware';
+
+import { schema as baseSchema } from '@schema';
+import { permissions } from '@permissions';
 
 config();
 
 const prisma = new PrismaClient();
 
+const schema = applyMiddleware(baseSchema, permissions);
+
 const server = new GraphQLServer({
     schema,
-    async context({ request }) {
-        const bearer = request.get('Bearer');
-        let user = null;
-
-        if (bearer) {
-            const { userId } = jwt.verify(bearer as string, process.env.APP_SECRET) as any;
-
-            if (userId) {
-                user = await prisma.user.findOne({ where: { id: userId } });
-            }
-        }
-
+    async context({ request, response }) {
         return {
-            ...request,
+            request,
+            response,
             prisma,
-            user,
         };
     },
 });
@@ -41,6 +32,7 @@ const server = new GraphQLServer({
 // server.express.use(bodyParser.json());
 // server.express.use(bodyParser.urlencoded({ extended: true }));
 server.express.use(helmet());
+server.express.use(authorization());
 
 server.options = {
     ...server.options,
