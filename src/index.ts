@@ -5,12 +5,12 @@ import * as helmet from 'helmet';
 
 import { PrismaClient } from '@prisma/client';
 
-import { formatError } from '@lib/formatError';
-import { formatResponse } from '@lib/formatResponse';
-import { authorization } from '@lib/auth-middleware';
+import { formatError } from 'lib/formatError';
+import { formatResponse } from 'lib/formatResponse';
+import { authorization } from 'lib/auth-middleware';
 
-import { schema as baseSchema } from '@schema';
-import { permissions } from '@permissions';
+import { schema as baseSchema } from 'schema';
+import { permissions } from 'permissions';
 
 config();
 
