@@ -19,7 +19,7 @@ const prisma = new PrismaClient();
 const server = new GraphQLServer({
     schema,
     async context({ request }) {
-        const { bearer } = request.headers;
+        const bearer = request.get('Bearer');
         let user = null;
 
         if (bearer) {
@@ -46,6 +46,7 @@ server.options = {
     ...server.options,
     formatError,
     formatResponse,
+    deduplicator: true,
 };
 
 server.start({ port: process.env.PORT }, () =>
