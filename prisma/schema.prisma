@@ -38,7 +38,7 @@ model User {
     password         String
     profile          UserProfile
     role             Role        @default(CONTRIBUTOR)
-    teams            Troup[]
+    troups           Troup[]
     createdTodos     TodoTask[]  @relation("_Todo_Task_Author")
     contributedTodos TodoTask[]  @relation("_Todo_Task_Contributor")
     ownedTodos       TodoTask[]  @relation("_Todo_Task_Owner")
