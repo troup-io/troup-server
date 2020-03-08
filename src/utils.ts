@@ -1,10 +1,11 @@
-import * as jwt from 'jsonwebtoken';
 import * as bcrypt from 'bcryptjs';
+import { ContextParameters } from 'graphql-yoga/dist/types';
 import { PrismaClient, User, UserGetSelectPayload, Troup } from '@prisma/client';
 
 export interface Context {
     prisma: PrismaClient;
-    request: any;
+    request: ContextParameters['request'];
+    response: ContextParameters['response'];
     user?: User;
 }
 
