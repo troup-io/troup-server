@@ -7,10 +7,12 @@ import { PrismaClient } from '@prisma/client';
 
 import { formatError } from 'lib/formatError';
 import { formatResponse } from 'lib/formatResponse';
-import { authorization } from 'lib/auth-middleware';
+import { middleware_Auth, middleware_User } from 'middlewares';
 
 import { schema as baseSchema } from 'schema';
 import { permissions } from 'permissions';
+
+import { middlewareApplicator } from 'utils';
 
 config();
 
@@ -31,8 +33,10 @@ const server = new GraphQLServer({
 
 // server.express.use(bodyParser.json());
 // server.express.use(bodyParser.urlencoded({ extended: true }));
-server.express.use(helmet());
-server.express.use(authorization());
+const useMiddleware = middlewareApplicator(server, prisma);
+useMiddleware(helmet);
+useMiddleware(middleware_Auth, true);
+useMiddleware(middleware_User, true);
 
 server.options = {
     ...server.options,

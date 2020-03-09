@@ -55,7 +55,11 @@ export function UserMutation(t: ObjectDefinitionBlock<'Mutation'>) {
             const user = await ctx.prisma.user.findOne({
                 where: { email },
                 include: {
-                    troups: true,
+                    troups: {
+                        where: {
+                            id: context,
+                        },
+                    },
                 },
             });
 
@@ -63,7 +67,7 @@ export function UserMutation(t: ObjectDefinitionBlock<'Mutation'>) {
                 throw new Error(`No such user found for email: ${email}`);
             }
 
-            if (!checkUserTroup(user, context)) {
+            if (!checkUserTroup(user)) {
                 throw new Error(`User (${email}) is not a member of this Troup.`);
             }
 

@@ -1,12 +1,24 @@
 import * as bcrypt from 'bcryptjs';
 import { ContextParameters } from 'graphql-yoga/dist/types';
-import { PrismaClient, User, UserGetSelectPayload, Troup } from '@prisma/client';
+import { GraphQLServer } from 'graphql-yoga';
+
+import { PrismaClient, UserGetSelectPayload } from '@prisma/client';
 
 export interface Context {
     prisma: PrismaClient;
     request: ContextParameters['request'];
     response: ContextParameters['response'];
-    user?: User;
+}
+
+export function middlewareApplicator(server: GraphQLServer, prisma: Context['prisma']): Function {
+    return function customMiddlewareApplier(middleware: Function, shouldPass?: boolean): void {
+        if (shouldPass) {
+            server.express.use(middleware(prisma));
+            return;
+        }
+
+        server.express.use(middleware());
+    };
 }
 
 export async function checkPasswordMatch(
@@ -16,9 +28,6 @@ export async function checkPasswordMatch(
     return await bcrypt.compare(password, user.password);
 }
 
-export function checkUserTroup(
-    user: UserGetSelectPayload<{ troups: true }>,
-    troupId: string
-): boolean {
-    return user.troups.some(troup => troup.id === troupId);
+export function checkUserTroup(user: UserGetSelectPayload<{ troups: true }>): boolean {
+    return !!user.troups.length;
 }
