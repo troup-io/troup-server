@@ -2,9 +2,9 @@ import * as bcrypt from 'bcryptjs';
 import * as jwt from 'jsonwebtoken';
 import { ObjectDefinitionBlock, stringArg } from 'nexus/dist/core';
 
-import { Context, checkPasswordMatch, checkUserTroup } from 'utils';
+import { Context, checkPasswordMatch, checkUserTroup, tokenSigner } from 'utils';
 
-export function UserMutation(t: ObjectDefinitionBlock<'Mutation'>) {
+export function UserMutations(t: ObjectDefinitionBlock<'Mutation'>) {
     t.field('signup', {
         type: 'UserSignupData',
         description: 'Create a user and the relevant user profile. ',
@@ -13,7 +13,6 @@ export function UserMutation(t: ObjectDefinitionBlock<'Mutation'>) {
             password: stringArg({ required: true }),
             firstName: stringArg({ required: true }),
             lastName: stringArg({ required: true }),
-            context: stringArg({ required: true }),
         },
         async resolve(_, { email, password, firstName, lastName }, ctx: Context) {
             const hashedPassword = await bcrypt.hash(password, 10);
@@ -38,7 +37,7 @@ export function UserMutation(t: ObjectDefinitionBlock<'Mutation'>) {
 
             return {
                 user,
-                token: jwt.sign({ userId: user.id }, process.env.APP_SECRET),
+                token: tokenSigner(user.id),
             };
         },
     });
@@ -81,4 +80,7 @@ export function UserMutation(t: ObjectDefinitionBlock<'Mutation'>) {
             };
         },
     });
+
+    t.crud.deleteOneUser();
+    t.crud.deleteOneUserProfile();
 }
