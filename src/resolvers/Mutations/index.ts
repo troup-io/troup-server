@@ -1,9 +1,11 @@
 import { mutationType } from 'nexus';
 
-import { UserMutation } from './User.mutations';
+import { UserMutations } from './User.mutations';
+import { TroupProfileMutations } from './TroupProfile.mutations';
 
 export const Mutation = mutationType({
     definition(t) {
-        UserMutation(t);
+        UserMutations(t);
+        TroupProfileMutations(t);
     },
 });
