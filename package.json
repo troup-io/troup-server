@@ -8,8 +8,9 @@
     "scripts": {
         "postinstall": "yarn generate-typings && yarn prisma2 generate",
         "bs:install": "yarn install",
+        "bs:generate": "yarn prisma2 generate",
         "bs:docker-compose": "(cd prisma && docker-compose up -d)",
-        "bootstrap": "run-s bs:* start",
+        "bootstrap": "run-s bs:* generate-typings",
         "start": "dotenv -- nodehawk",
         "generate-typings": "ts-node -r tsconfig-paths/register -T src/schema",
         "debug": "dotenv -- nodehawk",
