@@ -12,18 +12,20 @@ generator client {
 
 // Troup Model
 model Troup {
-    id        String       @id @default(cuid())
-    createdAt DateTime     @default(now())
-    updatedAt DateTime     @updatedAt
-    members   Int          @default(1)
-    profile   TroupProfile
+    id          String       @id @default(cuid())
+    createdAt   DateTime     @default(now())
+    updatedAt   DateTime     @updatedAt
+    members     Int          @default(1)
+    maxMembers  Int          @default(25)
+    profile     TroupProfile
+    primaryUser User
 }
 
 model TroupProfile {
     id         String   @id @default(cuid())
     createdAt  DateTime @default(now())
     updatedAt  DateTime @updatedAt
-    name       String
+    name       String   @unique
     adminEmail String?
     address    String?
     troup      Troup
@@ -37,11 +39,11 @@ model User {
     email            String      @unique
     password         String
     profile          UserProfile
-    role             Role        @default(CONTRIBUTOR)
+    roles            Role[]
     troups           Troup[]
-    createdTodos     TodoTask[]  @relation("_Todo_Task_Author")
-    contributedTodos TodoTask[]  @relation("_Todo_Task_Contributor")
-    ownedTodos       TodoTask[]  @relation("_Todo_Task_Owner")
+    createdTodos     Task[]      @relation("_Todo_Task_Author")
+    contributedTodos Task[]      @relation("_Todo_Task_Contributor")
+    ownedTodos       Task[]      @relation("_Todo_Task_Owner")
     createdPosts     Post[]      @relation("_Post_Author")
     contributedPosts Post[]      @relation("_Post_Contributor")
 }
@@ -52,6 +54,7 @@ model UserProfile {
     updatedAt              DateTime @updatedAt
     firstName              String
     lastName               String
+    isSuperAdmin           Boolean  @default(false)
     professionalCompetence String?
     referral               User?
     utm_source             String?
@@ -104,7 +107,7 @@ model TodoColumn {
     revisionHistory RevisionHistory[]
 }
 
-model TodoTask {
+model Task {
     id           String   @id @default(cuid())
     createdAt    DateTime @default(now())
     updatedAt    DateTime @updatedAt
@@ -126,6 +129,15 @@ model Label {
     todo      Todo?
 }
 
+model Role {
+    id        String    @id @default(cuid())
+    createdAt DateTime  @default(now())
+    updatedAt DateTime  @updatedAt
+    troup     Troup     @relation(references: [id])
+    user      User      @relation(references: [id])
+    value     RoleValue @default(CONTRIBUTOR)
+}
+
 model RevisionHistory {
     id        String   @id @default(cuid())
     createdAt DateTime @default(now())
@@ -141,9 +153,8 @@ model StateHistory {
     state     State    @default(ACTIVE)
 }
 
-
 // Enums
-enum Role {
+enum RoleValue {
     SUPER_ADMIN ADMIN MODERATOR CONTRIBUTOR
 }
 
