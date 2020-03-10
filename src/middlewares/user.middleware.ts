@@ -14,8 +14,15 @@ export function middleware_User(prisma: Context['prisma']) {
             try {
                 const user = await prisma.user.findOne({
                     where: { id: request.headers.userId as string },
+                    select: {
+                        profile: {
+                            select: {
+                                isSuperAdmin: true,
+                            },
+                        },
+                    },
                 });
-                if (user.role === 'SUPER_ADMIN') {
+                if (user.profile.isSuperAdmin) {
                     request.headers.isSuperAdmin = 'true';
                 } else {
                     delete request.headers.isSuperAdmin;
@@ -25,6 +32,7 @@ export function middleware_User(prisma: Context['prisma']) {
                 response.removeHeader('su');
             }
         }
+
         return next();
     };
 }
