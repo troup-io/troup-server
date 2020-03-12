@@ -3,7 +3,7 @@ import * as jwt from 'jsonwebtoken';
 import { ContextParameters } from 'graphql-yoga/dist/types';
 import { GraphQLServer } from 'graphql-yoga';
 
-import { PrismaClient, UserGetSelectPayload } from '@prisma/client';
+import { PrismaClient, UserGetPayload, UserArgs, Troup } from '@prisma/client';
 
 export interface Context {
     prisma: PrismaClient;
@@ -37,12 +37,12 @@ export function tokenRetriever(token: string): { userId: string; troupId: string
 }
 
 export async function checkPasswordMatch(
-    user: UserGetSelectPayload<{ password: true }>,
+    userPassword: UserGetPayload<UserArgs['select']['password']>['password'],
     password: string
 ): Promise<boolean> {
-    return await bcrypt.compare(password, user.password);
+    return await bcrypt.compare(password, userPassword);
 }
 
-export function checkUserTroup(user: UserGetSelectPayload<{ troups: true }>): boolean {
-    return !!user.troups.length;
+export function checkUserTroup(troups: Troup[]): boolean {
+    return !!troups.length;
 }

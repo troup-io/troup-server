@@ -58,6 +58,9 @@ export function UserMutations(t: ObjectDefinitionBlock<'Mutation'>) {
                         where: {
                             id: context,
                         },
+                        select: {
+                            id: true,
+                        },
                     },
                 },
             });
@@ -66,11 +69,11 @@ export function UserMutations(t: ObjectDefinitionBlock<'Mutation'>) {
                 throw new Error(`No such user found for email: ${email}`);
             }
 
-            if (!checkUserTroup(user)) {
+            if (!checkUserTroup(user.troups)) {
                 throw new Error(`User (${email}) is not a member of this Troup.`);
             }
 
-            if (!(await checkPasswordMatch(user, password))) {
+            if (!(await checkPasswordMatch(user.password, password))) {
                 throw new Error('Invalid password');
             }
 
