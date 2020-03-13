@@ -1,4 +1,4 @@
-<p align="center"><a href="https://troup.io" target="_blank"><img src="https://repository-images.githubusercontent.com/219059243/d2424b80-396d-11ea-86d9-387d10783a67" width="50%" align="center" style="border-radius: 10px" /></a></p>
+<p align="center"><a href="https://troup.io" target="_blank"><img src="https://github.com/troup-io/troup-assets/blob/master/banner/logo-light-slim-tag.jpg?raw=true" width="50%" align="center" style="border-radius: 10px" /></a></p>
 
 <p>&nbsp;</p>
 
