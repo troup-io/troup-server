@@ -9,7 +9,8 @@ export const permissions = shield(
             '*': chain(isAuthenticated, isOwnResource),
         },
         Mutation: {
-            signup: allow,
+            signupUser: allow,
+            signupTroup: allow,
             signin: allow,
             deleteOneUser: allow,
             deleteOneUserProfile: allow,
