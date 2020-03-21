@@ -5,7 +5,18 @@ import { ObjectDefinitionBlock, stringArg } from 'nexus/dist/core';
 import { Context, checkPasswordMatch, checkUserTroup, tokenSigner } from 'utils';
 
 export function UserMutations(t: ObjectDefinitionBlock<'Mutation'>) {
-    t.field('signup', {
+    t.field('checkIfUserExists', {
+        type: 'Boolean',
+        description: 'Check if a user already exists while creating',
+        args: {
+            email: stringArg({ required: true }),
+        },
+        async resolve(_, { email }, ctx: Context) {
+            return !!(await ctx.prisma.user.findOne({ where: { email } }));
+        },
+    });
+
+    t.field('signupUser', {
         type: 'UserSignupData',
         description: 'Create a user and the relevant user profile. ',
         args: {
@@ -13,8 +24,9 @@ export function UserMutations(t: ObjectDefinitionBlock<'Mutation'>) {
             password: stringArg({ required: true }),
             firstName: stringArg({ required: true }),
             lastName: stringArg({ required: true }),
+            troupId: stringArg({ required: true }),
         },
-        async resolve(_, { email, password, firstName, lastName }, ctx: Context) {
+        async resolve(_, { email, password, firstName, lastName, troupId }, ctx: Context) {
             const hashedPassword = await bcrypt.hash(password, 10);
 
             const existingUser = await ctx.prisma.user.findOne({ where: { email } });
@@ -32,12 +44,100 @@ export function UserMutations(t: ObjectDefinitionBlock<'Mutation'>) {
                             lastName,
                         },
                     },
+                    roles: {
+                        create: {
+                            troup: {
+                                connect: {
+                                    id: troupId,
+                                },
+                            },
+                            value: 'CONTRIBUTOR',
+                        },
+                    },
                 },
             });
 
             return {
                 user,
                 token: tokenSigner(user.id),
+            };
+        },
+    });
+
+    t.field('signupTroup', {
+        type: 'TroupSignupData',
+        description:
+            'Create a user and the relevant profile, along with the Troup and relevant profile.',
+        args: {
+            email: stringArg({ required: true }),
+            password: stringArg({ required: true }),
+            firstName: stringArg({ required: true }),
+            lastName: stringArg({ required: true }),
+            troupName: stringArg({ required: true }),
+        },
+        async resolve(_, { email, password, firstName, lastName, troupName }, ctx: Context) {
+            const hashedPassword = await bcrypt.hash(password, 10);
+
+            const existingUser = await ctx.prisma.user.findOne({ where: { email } });
+            if (existingUser) {
+                throw new Error('User already exists!');
+            }
+
+            const existingTroup = await ctx.prisma.troupProfile.findOne({
+                where: { name: troupName },
+            });
+            if (existingTroup) {
+                throw new Error('Troup already exists.');
+            }
+
+            const troup = await ctx.prisma.troup.create({
+                data: {
+                    profile: {
+                        create: {
+                            name: troupName,
+                        },
+                    },
+                    primaryUser: {
+                        create: {
+                            email,
+                            password: hashedPassword,
+                            profile: {
+                                create: {
+                                    firstName,
+                                    lastName,
+                                },
+                            },
+                        },
+                    },
+                },
+                include: {
+                    primaryUser: {
+                        select: {
+                            id: true,
+                        },
+                    },
+                },
+            });
+
+            await ctx.prisma.role.create({
+                data: {
+                    value: 'ADMIN',
+                    user: {
+                        connect: {
+                            id: troup.primaryUser.id,
+                        },
+                    },
+                    troup: {
+                        connect: {
+                            id: troup.id,
+                        },
+                    },
+                },
+            });
+
+            return {
+                troup,
+                token: tokenSigner(troup.primaryUser.id),
             };
         },
     });
