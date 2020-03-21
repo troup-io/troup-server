@@ -9,3 +9,13 @@ export const UserSignupData = objectType({
         t.string('token');
     },
 });
+
+export const TroupSignupData = objectType({
+    name: 'TroupSignupData',
+    definition(t) {
+        t.field('troup', {
+            type: 'Troup',
+        });
+        t.string('token');
+    },
+});
