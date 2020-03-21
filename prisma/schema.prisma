@@ -133,8 +133,8 @@ model Role {
     id        String    @id @default(cuid())
     createdAt DateTime  @default(now())
     updatedAt DateTime  @updatedAt
-    troup     Troup     @relation(references: [id])
-    user      User      @relation(references: [id])
+    troup     Troup
+    user      User
     value     RoleValue @default(CONTRIBUTOR)
 }
 
