@@ -9,13 +9,7 @@ export function TroupProfileMutations(t: ObjectDefinitionBlock<'Mutation'>) {
             name: stringArg({ required: true }),
         },
         async resolve(_, { name }, ctx: Context) {
-            const troup = await ctx.prisma.troupProfile.findOne({ where: { name } });
-
-            if (troup) {
-                return true;
-            }
-
-            return false;
+            return !!(await ctx.prisma.troupProfile.findOne({ where: { name } }));
         },
     });
 }
