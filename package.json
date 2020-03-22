@@ -3,7 +3,6 @@
     "private": true,
     "version": "0.0.0",
     "author": "Samrith Shankar <samrith.shankar@outlook.com>",
-    "license": "GPL-3.0",
     "repository": "git@github.com:troup-io/troup-server.git",
     "scripts": {
         "bs:generate": "yarn prisma2 generate",
