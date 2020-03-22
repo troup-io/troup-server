@@ -1,24 +1,38 @@
 {
+    "npm.packageManager": "yarn",
+    "task.autoDetect": "off",
     "workbench.colorCustomizations": {
         "titleBar.activeBackground": "#8a397a",
         "titleBar.activeForeground": "#fff",
         "titleBar.inactiveBackground": "#55274c"
     },
+    "editor.colorDecorators": true,
+    "editor.rulers": [
+        { "column": 80, "color": "#704e0358" },
+        { "column": 100, "color": "#9c040488" }
+    ],
     "eslint.validate": ["typescript", "typescriptreact", "json"],
     "eslint.packageManager": "yarn",
     "editor.defaultFormatter": "esbenp.prettier-vscode",
     "editor.formatOnSave": true,
-    "[*]": {
-        "editor.codeActionsOnSave": {
-            "source.fixAll.eslint": true
-        }
+    "editor.codeActionsOnSave": {
+        "source.fixAll.eslint": true
     },
     "[prisma]": {
         "editor.defaultFormatter": "Prisma.prisma"
     },
+    "timeline.showView": true,
+    "npm.autoDetect": "off",
+    "npm.fetchOnlinePackageInfo": true,
     "files.associations": {
         "*rc": "json"
     },
+    "json.schemas": [
+        {
+            "fileMatch": [".nodehawkrc"],
+            "url": "http://json.schemastore.org/nodehawkrc"
+        }
+    ],
     "files.exclude": {
         "**/.git": true,
         "**/.svn": true,

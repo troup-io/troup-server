@@ -12,7 +12,7 @@ import { middleware_Auth, middleware_User } from 'middlewares';
 import { schema as baseSchema } from 'schema';
 import { permissions } from 'permissions';
 
-import { middlewareApplicator } from 'utils';
+import { middlewareApplicator, Context } from 'utils';
 
 config();
 
@@ -22,7 +22,7 @@ const schema = applyMiddleware(baseSchema, permissions);
 
 const server = new GraphQLServer({
     schema,
-    async context({ request, response }) {
+    context({ request, response }): Context {
         return {
             request,
             response,

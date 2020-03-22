@@ -19,6 +19,7 @@ model Troup {
     maxMembers  Int          @default(25)
     profile     TroupProfile
     primaryUser User
+    users       User[]       @relation("_Troup_Users")
 }
 
 model TroupProfile {

@@ -10,7 +10,6 @@ export function middleware_Auth() {
         next: Function
     ) {
         const bearer = request.get('Bearer');
-        console.log('bearer', bearer);
         if (!bearer) {
             return next();
         }

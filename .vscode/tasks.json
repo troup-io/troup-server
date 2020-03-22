@@ -1,0 +1,49 @@
+{
+    // See https://go.microsoft.com/fwlink/?LinkId=733558
+    // for the documentation about the tasks.json format
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Generate typings",
+            "type": "shell",
+            "command": "yarn generate-typings",
+            "problemMatcher": "$eslint-stylish",
+            "detail": "Generate @nexus/types to ensure automcompletion and type safety."
+        },
+        {
+            "label": "Generate Prisma client",
+            "type": "shell",
+            "command": "yarn prisma2 generate",
+            "problemMatcher": "$eslint-stylish",
+            "detail": "Generate @prisma/client to ensure Prisma autocompletion and type safety."
+        },
+        {
+            "label": "Check linting",
+            "type": "shell",
+            "command": "yarn lint",
+            "problemMatcher": "$eslint-stylish",
+            "detail": "Lint the files to check for any errors or inconsistencies."
+        },
+        {
+            "label": "Start Studio",
+            "type": "shell",
+            "command": "yarn prisma2 studio --experimental",
+            "detail": "Run the Prisma Studio to view the GUI for our database.",
+            "problemMatcher": ["$eslint-stylish"]
+        },
+        {
+            "label": "Bootstrap",
+            "type": "shell",
+            "command": "yarn bootstrap",
+            "problemMatcher": "$eslint-compact",
+            "detail": "Bootstrap the project post-cloning, installing dependencies and running all migrations."
+        },
+        {
+            "label": "Build production",
+            "type": "shell",
+            "command": "yarn build",
+            "problemMatcher": "$eslint-stylish",
+            "detail": "Create a production build of the server to test out locally."
+        }
+    ]
+}
