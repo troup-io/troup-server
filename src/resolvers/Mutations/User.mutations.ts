@@ -4,7 +4,7 @@ import { ObjectDefinitionBlock, stringArg } from 'nexus/dist/core';
 
 import { Context, checkPasswordMatch, checkUserTroup, tokenSigner } from 'utils';
 
-export function UserMutations(t: ObjectDefinitionBlock<'Mutation'>) {
+export function UserMutations(t: ObjectDefinitionBlock<'Mutation'>): void {
     t.field('checkIfUserExists', {
         type: 'Boolean',
         description: 'Check if a user already exists while creating',
@@ -42,6 +42,11 @@ export function UserMutations(t: ObjectDefinitionBlock<'Mutation'>) {
                         create: {
                             firstName,
                             lastName,
+                        },
+                    },
+                    troups: {
+                        connect: {
+                            id: troupId,
                         },
                     },
                     roles: {
