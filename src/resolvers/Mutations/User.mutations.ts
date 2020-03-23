@@ -174,11 +174,11 @@ export function UserMutations(t: ObjectDefinitionBlock<'Mutation'>): void {
                 throw new Error(`No such user found for email: ${email}`);
             }
 
-            if (!checkUserTroup(user.troups)) {
+            if (!checkUserTroup(user)) {
                 throw new Error(`User (${email}) is not a member of this Troup.`);
             }
 
-            if (!(await checkPasswordMatch(user.password, password))) {
+            if (!(await checkPasswordMatch(user, password))) {
                 throw new Error('Invalid password');
             }
 

@@ -37,12 +37,12 @@ export function tokenRetriever(token: string): { userId: string; troupId: string
 }
 
 export async function checkPasswordMatch(
-    userPassword: UserGetPayload<UserArgs['select']['password']>['password'],
+    user: UserGetPayload<{ select: { password: true } }>,
     password: string
 ): Promise<boolean> {
-    return await bcrypt.compare(password, userPassword);
+    return await bcrypt.compare(password, user.password);
 }
 
-export function checkUserTroup(troups: Troup[]): boolean {
-    return !!troups.length;
+export function checkUserTroup(user: UserGetPayload<{ include: { troups: true } }>): boolean {
+    return !!user.troups.length;
 }
