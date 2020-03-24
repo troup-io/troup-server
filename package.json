@@ -5,9 +5,9 @@
     "author": "Samrith Shankar <samrith.shankar@outlook.com>",
     "repository": "git@github.com:troup-io/troup-server.git",
     "scripts": {
-        "bs:generate": "yarn prisma2 generate",
         "bs:docker-compose": "(cd prisma && docker-compose up -d)",
-        "bootstrap": "run-s install bs:* generate-typings",
+        "bs:generate": "yarn prisma2 generate",
+        "bootstrap": "yarn install && run-s bs:* generate-typings",
         "generate-typings": "ts-node -r tsconfig-paths/register -T src/schema",
         "start": "dotenv -- nodehawk",
         "lint": "eslint src --ext .ts,.json,.js",
