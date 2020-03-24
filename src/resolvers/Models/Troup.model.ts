@@ -6,6 +6,5 @@ export const Troup = objectType({
         t.model.id();
         t.model.createdAt();
         t.model.updatedAt();
-        t.model.members();
     },
 });

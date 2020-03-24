@@ -15,7 +15,6 @@ model Troup {
     id          String       @id @default(cuid())
     createdAt   DateTime     @default(now())
     updatedAt   DateTime     @updatedAt
-    members     Int          @default(1)
     maxMembers  Int          @default(25)
     profile     TroupProfile
     primaryUser User
