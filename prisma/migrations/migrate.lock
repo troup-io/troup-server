@@ -1,8 +1,6 @@
 # IF THERE'S A GIT CONFLICT IN THIS FILE, DON'T SOLVE IT MANUALLY!
-# INSTEAD EXECUTE `prisma2 migrate fix`
+# INSTEAD EXECUTE `prisma migrate fix`
 # Prisma Migrate lockfile v1
 # Read more about conflict resolution here: TODO
 
-20200312182551-first-migration
-20200321234512-update-roles-to-contain-relations
-20200324155528-update-troup-user-relations
+20200418142345-init
