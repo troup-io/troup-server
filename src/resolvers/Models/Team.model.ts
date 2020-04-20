@@ -1,13 +1,14 @@
 import { objectType } from 'nexus';
 
-export const TroupProfile = objectType({
-    name: 'TroupProfile',
+export const Team = objectType({
+    name: 'Team',
     definition(t) {
         t.model.id();
         t.model.createdAt();
         t.model.updatedAt();
         t.model.name();
         t.model.adminEmail();
-        t.model.address();
+        t.model.maxMembers();
+        t.model.members();
     },
 });
