@@ -25,10 +25,15 @@
   dependencies:
     regenerator-runtime "^0.13.4"
 
-"@prisma/client@^2.0.0-alpha.904":
-  version "2.0.0-alpha.904"
-  resolved "https://registry.yarnpkg.com/@prisma/client/-/client-2.0.0-alpha.904.tgz#37141d86099dc8e0bfa344b3d32048b2eb4d9830"
-  integrity sha512-ip2HoRhcMVEBc0fAOLpm8aEqNDGPBI/A+xeu+O1DT75LKP9ukXBhgbIR9RhZrY3FBmF5T1wxlJddz5huIaxbhQ==
+"@prisma/cli@^2.0.0-beta.2":
+  version "2.0.0-beta.2"
+  resolved "https://registry.yarnpkg.com/@prisma/cli/-/cli-2.0.0-beta.2.tgz#5252cbe458fd7de479a6697ab5cffd1659a5762c"
+  integrity sha512-lD0cv/YC4g4SKByxH3hvzX1oS9cjRdCDU1Sh2inATaKcTHWPlxxgXQW4yYU2FF/HSWR9KK6YMAdO3ShkOl1PEQ==
+
+"@prisma/client@^2.0.0-beta.2":
+  version "2.0.0-beta.2"
+  resolved "https://registry.yarnpkg.com/@prisma/client/-/client-2.0.0-beta.2.tgz#dd7b357f65e8100cd6cc1b610d848b72217640bb"
+  integrity sha512-VhNYeeGTrFfLjB/JL7XPoWpxSTCb+YV+F3ggR1X0CGa4b/u6Kxy65aElLozs+yFdMQPVNkyg2PwUO8xQ7G9fpg==
 
 "@types/aws-lambda@8.10.13":
   version "8.10.13"
@@ -128,10 +133,10 @@
   resolved "https://registry.yarnpkg.com/@types/node/-/node-13.1.7.tgz#db51d28b8dfacfe4fb2d0da88f5eb0a2eca00675"
   integrity sha512-HU0q9GXazqiKwviVxg9SI/+t/nAsGkvLDkIdxz+ObejG2nX6Si00TeLqHMoS+a/1tjH7a8YpKVQwtgHuMQsldg==
 
-"@types/node@13.7.4":
-  version "13.7.4"
-  resolved "https://registry.yarnpkg.com/@types/node/-/node-13.7.4.tgz#76c3cb3a12909510f52e5dc04a6298cdf9504ffd"
-  integrity sha512-oVeL12C6gQS/GAExndigSaLxTrKpQPxewx9bOcwfvJiJge4rr7wNaph4J+ns5hrmIV2as5qxqN8YKthn9qh0jw==
+"@types/node@^13.13.1":
+  version "13.13.1"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-13.13.1.tgz#1ba94c5a177a1692518bfc7b41aec0aa1a14354e"
+  integrity sha512-uysqysLJ+As9jqI5yqjwP3QJrhOcUwBjHUlUxPxjbplwKoILvXVsmYWEhfmAQlrPfbRZmhJB007o4L9sKqtHqQ==
 
 "@types/range-parser@*":
   version "1.2.3"
@@ -2067,11 +2072,6 @@ prettier@1.19.1:
   version "1.19.1"
   resolved "https://registry.yarnpkg.com/prettier/-/prettier-1.19.1.tgz#f7d7f5ff8a9cd872a7be4ca142095956a60797cb"
   integrity sha512-s7PoyDv/II1ObgQunCbB9PdLmUcBZcnWOcxDh7O0N/UwDEsHyqkW+Qh28jW+mVuCdx7gLB0BotYI1Y6uI9iyew==
-
-prisma2@^2.0.0-alpha.904:
-  version "2.0.0-alpha.904"
-  resolved "https://registry.yarnpkg.com/prisma2/-/prisma2-2.0.0-alpha.904.tgz#d1a519411ad31c34f2216261fdfe4e828bd9d0c5"
-  integrity sha512-m2gVwktaz7Im/mSxSApNwJ/S70Zhpt6N12jm/YqUjNBX8X4rkzdjw/QuBj/Kcpc/YdzMniVdXhCzTpmiAv0z0Q==
 
 progress@^2.0.0:
   version "2.0.3"
