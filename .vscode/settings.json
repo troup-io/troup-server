@@ -50,6 +50,7 @@
         "**/bower_components": true,
         "**/*.code-search": true,
         "**/yarn.lock": true,
-        "**/.eslintrc": true
+        "**/.eslintrc": true,
+        "**/cmd": true
     }
 }
