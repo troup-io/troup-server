@@ -1,6 +1,6 @@
 version: '3'
 services:
-    postgres:
+    pg_container:
         image: postgres:9.6
         restart: always
         # Uncomment the next two lines to connect to your your database from outside the Docker environment, e.g. using a database GUI like Postico
@@ -10,6 +10,6 @@ services:
             POSTGRES_USER: prisma
             POSTGRES_PASSWORD: prisma
         volumes:
-            - postgres:/var/lib/postgresql/data
+            - pg_volume:/var/lib/postgresql/troup
 volumes:
-    postgres:
+    pg_volume:
