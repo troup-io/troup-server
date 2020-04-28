@@ -1,15 +1,16 @@
 import { ObjectDefinitionBlock, stringArg } from 'nexus/dist/core';
+
 import { Context } from 'utils';
 
-export function TroupProfileMutations(t: ObjectDefinitionBlock<'Mutation'>) {
-    t.field('checkTroupName', {
+export function TeamMutations(t: ObjectDefinitionBlock<'Mutation'>): void {
+    t.field('checkTeamName', {
         type: 'Boolean',
-        description: 'Check if a Troup profile by that name already exists.',
+        description: 'Check if a Team by that name already exists.',
         args: {
             name: stringArg({ required: true }),
         },
         async resolve(_, { name }, ctx: Context) {
-            return !!(await ctx.prisma.troupProfile.findOne({ where: { name } }));
+            return !!(await ctx.prisma.team.findOne({ where: { name } }));
         },
     });
 }

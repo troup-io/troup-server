@@ -10,11 +10,11 @@ export const UserSignupData = objectType({
     },
 });
 
-export const TroupSignupData = objectType({
-    name: 'TroupSignupData',
+export const TeamSignupData = objectType({
+    name: 'TeamSignupData',
     definition(t) {
-        t.field('troup', {
-            type: 'Troup',
+        t.field('team', {
+            type: 'Team',
         });
         t.string('token');
     },

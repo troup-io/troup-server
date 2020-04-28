@@ -2,7 +2,7 @@ import * as bcrypt from 'bcryptjs';
 import * as jwt from 'jsonwebtoken';
 import { ObjectDefinitionBlock, stringArg } from 'nexus/dist/core';
 
-import { Context, checkPasswordMatch, checkUserTroup, tokenSigner } from 'utils';
+import { Context, checkPasswordMatch, checkUserTeam, tokenSigner } from 'utils';
 
 export function UserMutations(t: ObjectDefinitionBlock<'Mutation'>): void {
     t.field('checkIfUserExists', {
@@ -24,9 +24,9 @@ export function UserMutations(t: ObjectDefinitionBlock<'Mutation'>): void {
             password: stringArg({ required: true }),
             firstName: stringArg({ required: true }),
             lastName: stringArg({ required: true }),
-            troupId: stringArg({ required: true }),
+            teamId: stringArg({ required: true }),
         },
-        async resolve(_, { email, password, firstName, lastName, troupId }, ctx: Context) {
+        async resolve(_, { email, password, firstName, lastName, teamId }, ctx: Context) {
             const hashedPassword = await bcrypt.hash(password, 10);
 
             const existingUser = await ctx.prisma.user.findOne({ where: { email } });
@@ -44,19 +44,9 @@ export function UserMutations(t: ObjectDefinitionBlock<'Mutation'>): void {
                             lastName,
                         },
                     },
-                    troups: {
+                    teams: {
                         connect: {
-                            id: troupId,
-                        },
-                    },
-                    roles: {
-                        create: {
-                            troup: {
-                                connect: {
-                                    id: troupId,
-                                },
-                            },
-                            value: 'CONTRIBUTOR',
+                            id: teamId,
                         },
                     },
                 },
@@ -69,18 +59,18 @@ export function UserMutations(t: ObjectDefinitionBlock<'Mutation'>): void {
         },
     });
 
-    t.field('signupTroup', {
-        type: 'TroupSignupData',
+    t.field('signupTeam', {
+        type: 'TeamSignupData',
         description:
-            'Create a user and the relevant profile, along with the Troup and relevant profile.',
+            'Create a user and the relevant profile, along with the Team and relevant profile.',
         args: {
             email: stringArg({ required: true }),
             password: stringArg({ required: true }),
             firstName: stringArg({ required: true }),
             lastName: stringArg({ required: true }),
-            troupName: stringArg({ required: true }),
+            teamName: stringArg({ required: true }),
         },
-        async resolve(_, { email, password, firstName, lastName, troupName }, ctx: Context) {
+        async resolve(_, { email, password, firstName, lastName, teamName }, ctx: Context) {
             const hashedPassword = await bcrypt.hash(password, 10);
 
             const existingUser = await ctx.prisma.user.findOne({ where: { email } });
@@ -88,21 +78,17 @@ export function UserMutations(t: ObjectDefinitionBlock<'Mutation'>): void {
                 throw new Error('User already exists!');
             }
 
-            const existingTroup = await ctx.prisma.troupProfile.findOne({
-                where: { name: troupName },
+            const existingTeam = await ctx.prisma.team.findOne({
+                where: { name: teamName },
             });
-            if (existingTroup) {
-                throw new Error('Troup already exists.');
+            if (existingTeam) {
+                throw new Error('Team already exists.');
             }
 
-            const troup = await ctx.prisma.troup.create({
+            const team = await ctx.prisma.team.create({
                 data: {
-                    profile: {
-                        create: {
-                            name: troupName,
-                        },
-                    },
-                    primaryUser: {
+                    name: teamName,
+                    owner: {
                         create: {
                             email,
                             password: hashedPassword,
@@ -116,7 +102,7 @@ export function UserMutations(t: ObjectDefinitionBlock<'Mutation'>): void {
                     },
                 },
                 include: {
-                    primaryUser: {
+                    owner: {
                         select: {
                             id: true,
                         },
@@ -124,25 +110,25 @@ export function UserMutations(t: ObjectDefinitionBlock<'Mutation'>): void {
                 },
             });
 
-            await ctx.prisma.role.create({
-                data: {
-                    value: 'ADMIN',
-                    user: {
-                        connect: {
-                            id: troup.primaryUser.id,
-                        },
-                    },
-                    troup: {
-                        connect: {
-                            id: troup.id,
-                        },
-                    },
-                },
-            });
+            // await ctx.prisma.role.create({
+            //     data: {
+            //         value: 'ADMIN',
+            //         user: {
+            //             connect: {
+            //                 id: troup.primaryUser.id,
+            //             },
+            //         },
+            //         troup: {
+            //             connect: {
+            //                 id: troup.id,
+            //             },
+            //         },
+            //     },
+            // });
 
             return {
-                troup,
-                token: tokenSigner(troup.primaryUser.id),
+                team,
+                token: tokenSigner(team.owner.id),
             };
         },
     });
@@ -159,7 +145,7 @@ export function UserMutations(t: ObjectDefinitionBlock<'Mutation'>): void {
             const user = await ctx.prisma.user.findOne({
                 where: { email },
                 include: {
-                    troups: {
+                    teams: {
                         where: {
                             id: context,
                         },
@@ -174,7 +160,7 @@ export function UserMutations(t: ObjectDefinitionBlock<'Mutation'>): void {
                 throw new Error(`No such user found for email: ${email}`);
             }
 
-            if (!checkUserTroup(user)) {
+            if (!checkUserTeam(user)) {
                 throw new Error(`User (${email}) is not a member of this Troup.`);
             }
 

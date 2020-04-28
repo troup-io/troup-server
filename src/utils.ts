@@ -3,7 +3,7 @@ import * as jwt from 'jsonwebtoken';
 import { ContextParameters } from 'graphql-yoga/dist/types';
 import { GraphQLServer } from 'graphql-yoga';
 
-import { PrismaClient, UserGetPayload, UserArgs, Troup } from '@prisma/client';
+import { PrismaClient, UserGetPayload } from '@prisma/client';
 
 export interface Context {
     prisma: PrismaClient;
@@ -22,17 +22,16 @@ export function middlewareApplicator(server: GraphQLServer, prisma: Context['pri
     };
 }
 
-export function tokenSigner(userId: string, troupId = ''): string {
-    return jwt.sign({ context: `${userId}.${troupId}` }, process.env.APP_SECRET);
+export function tokenSigner(userId: string, teamId = ''): string {
+    return jwt.sign({ context: `${userId}.${teamId}` }, process.env.APP_SECRET);
 }
 
-export function tokenRetriever(token: string): { userId: string; troupId: string } {
+export function tokenRetriever(token: string): { userId: string; teamId: string } {
     const result = jwt.verify(token as string, process.env.APP_SECRET) as any;
-    // const [userId, troupId = ''] = result.context.split('.');
 
     return {
         userId: 'lol',
-        troupId: 'haha',
+        teamId: 'haha',
     };
 }
 
@@ -43,6 +42,8 @@ export async function checkPasswordMatch(
     return await bcrypt.compare(password, user.password);
 }
 
-export function checkUserTroup(user: UserGetPayload<{ include: { troups: true } }>): boolean {
-    return !!user.troups.length;
+export function checkUserTeam(
+    user: UserGetPayload<{ include: { teams: { select: { id: true } } } }>
+): boolean {
+    return !!user.teams.length;
 }

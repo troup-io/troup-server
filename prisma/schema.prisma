@@ -34,7 +34,6 @@ model UserProfile {
   id                     String   @default(uuid()) @id
   createdAt              DateTime @default(now())
   updatedAt              DateTime @updatedAt
-  userId                 String
   firstName              String
   lastName               String
   isSuperAdmin           Boolean  @default(false)

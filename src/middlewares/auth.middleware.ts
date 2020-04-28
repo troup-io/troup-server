@@ -15,14 +15,14 @@ export function middleware_Auth() {
         }
 
         try {
-            const { userId, troupId } = tokenRetriever(bearer);
+            const { userId, teamId } = tokenRetriever(bearer);
             request.headers.userId = userId;
-            request.headers.troupId = troupId;
+            request.headers.teamId = teamId;
         } catch (error) {
             console.log('AUTH_MIDDLEWARE', error.message);
             response.removeHeader('Bearer');
             response.removeHeader('userId');
-            response.removeHeader('troupId');
+            response.removeHeader('teamId');
         }
 
         return next();

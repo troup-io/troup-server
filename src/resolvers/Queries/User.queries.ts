@@ -1,4 +1,4 @@
-import { ObjectDefinitionBlock, stringArg } from 'nexus/dist/core';
+import { ObjectDefinitionBlock } from 'nexus/dist/core';
 
 // import { Context } from 'utils';
 
