@@ -6,14 +6,14 @@
         {
             "label": "Generate typings",
             "type": "shell",
-            "command": "./node_modules/.bin/ts-node cmd generate typings",
+            "command": "yarn cmd generate typings",
             "problemMatcher": "$eslint-stylish",
             "detail": "Generate @nexus/types to ensure automcompletion and type safety."
         },
         {
             "label": "Generate Prisma client",
             "type": "shell",
-            "command": "./node_modules/.bin/ts-node cmd generate client",
+            "command": "yarn cmd generate client",
             "problemMatcher": "$eslint-stylish",
             "detail": "Generate @prisma/client to ensure Prisma autocompletion and type safety."
         },
@@ -34,14 +34,21 @@
         {
             "label": "Start Database",
             "type": "shell",
-            "command": "yarn bs:docker-compose",
+            "command": "yarn cmd db start",
+            "problemMatcher": "$eslint-stylish",
+            "detail": "Start the Postgres database as a Dockerised container."
+        },
+        {
+            "label": "Start Database",
+            "type": "shell",
+            "command": "yarn cmd db setup",
             "problemMatcher": "$eslint-stylish",
             "detail": "Start the Postgres database as a Dockerised container."
         },
         {
             "label": "Clean Database",
             "type": "shell",
-            "command": "./node_modules/.bin/ts-node ./cmd/prune-database",
+            "command": "yarn cmd db clean",
             "problemMatcher": "$eslint-stylish",
             "detail": "Clean the database and run all migrations to start from scratch."
         },

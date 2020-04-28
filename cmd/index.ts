@@ -15,6 +15,7 @@ function runSingleCommand(command: CommandItem): void {
             stdio: 'inherit',
             cwd,
         });
+        return;
     } catch (error) {
         process.exit(1);
     }
@@ -61,6 +62,7 @@ function commandRunnner(commands: CommandItem[]): void {
 
             if (command) {
                 runSingleCommand(command);
+                return;
             } else {
                 throw 1;
             }

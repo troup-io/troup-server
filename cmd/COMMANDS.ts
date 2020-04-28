@@ -28,6 +28,9 @@ export default {
         sequence: 2,
         bootstrap: true,
     },
+    'db:clean': {
+        command: './node_modules/.bin/ts-node cmd/runners/prune-database',
+    },
     'generate:client': {
         command: 'yarn prisma2 generate',
         sequence: 3,
