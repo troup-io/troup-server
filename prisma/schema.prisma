@@ -27,7 +27,7 @@ model User {
   password  String
   profile   UserProfile @relation(fields: [profileId], references: [id])
   profileId String
-  teams     Team[]
+  teams     Team[]      @relation("_UsersOnTeam", references: [id])
 }
 
 model UserProfile {
