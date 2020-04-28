@@ -7,14 +7,22 @@ import { Context, checkPasswordMatch, checkUserTeam, tokenSigner } from 'utils';
 export function AuthMutations(t: ObjectDefinitionBlock<'Mutation'>): void {
     t.field('signupUser', {
         type: 'UserSignupData',
-        description:
-            'Create a user and the relevant user profile, along with the creation of the team',
+        description: "Team creation flow. The created user is the team's owner.",
         args: {
-            email: stringArg({ required: true }),
-            password: stringArg({ required: true }),
-            firstName: stringArg({ required: true }),
-            lastName: stringArg({ required: true }),
-            teamId: stringArg({ required: true }),
+            email: stringArg({
+                required: true,
+                description: "The user's email address.",
+            }),
+            password: stringArg({
+                required: true,
+                description: "The user's password.",
+            }),
+            firstName: stringArg({ required: true, description: "The user's first name." }),
+            lastName: stringArg({ required: true, description: "The user's last name." }),
+            teamId: stringArg({
+                required: true,
+                description: 'The ID of the team sign up with.',
+            }),
         },
         async resolve(_, { email, password, firstName, lastName, teamId }, ctx: Context) {
             const hashedPassword = await bcrypt.hash(password, 10);
@@ -54,23 +62,32 @@ export function AuthMutations(t: ObjectDefinitionBlock<'Mutation'>): void {
         description:
             'Create a user and the relevant profile, along with the team and relevant profile.',
         args: {
-            email: stringArg({ required: true }),
-            password: stringArg({ required: true }),
-            firstName: stringArg({ required: true }),
-            lastName: stringArg({ required: true }),
-            teamName: stringArg({ required: true }),
+            email: stringArg({
+                required: true,
+                description: "The user's email address.",
+            }),
+            password: stringArg({
+                required: true,
+                description: "The user's password.",
+            }),
+            firstName: stringArg({ required: true, description: "The user's first name." }),
+            lastName: stringArg({ required: true, description: "The user's last name." }),
+            teamName: stringArg({
+                required: true,
+                description: 'The name of the team being created. Must be unique.',
+            }),
         },
         async resolve(_, { email, password, firstName, lastName, teamName }, ctx: Context) {
             const hashedPassword = await bcrypt.hash(password, 10);
 
-            const existingUser = await ctx.prisma.user.findOne({ where: { email } });
+            const existingUser = !!(await ctx.prisma.user.count({ where: { email } }));
             if (existingUser) {
                 throw new Error('User already exists!');
             }
 
-            const existingTeam = await ctx.prisma.team.findOne({
+            const existingTeam = !!(await ctx.prisma.team.count({
                 where: { name: teamName },
-            });
+            }));
             if (existingTeam) {
                 throw new Error('Team already exists.');
             }
@@ -109,20 +126,29 @@ export function AuthMutations(t: ObjectDefinitionBlock<'Mutation'>): void {
 
     t.field('signin', {
         type: 'UserSignupData',
-        description: 'Sign a user and return the token and the user.',
+        description: 'Sign in with an email and return the user and user.',
         args: {
-            email: stringArg({ required: true }),
-            password: stringArg({ required: true }),
-            context: stringArg({ required: true }),
+            email: stringArg({
+                required: true,
+                description: "The user's email address.",
+            }),
+            password: stringArg({
+                required: true,
+                description: "The user's password.",
+            }),
+            teamId: stringArg({
+                required: true,
+                description: 'The ID of the team to sign in to.',
+            }),
         },
-        async resolve(_, { email, password, context }, ctx: Context) {
+        async resolve(_, { email, password, teamId }, ctx: Context) {
             const user = await ctx.prisma.user.findOne({
                 where: { email },
                 include: {
                     profile: true,
                     teams: {
                         where: {
-                            id: context,
+                            id: teamId,
                         },
                         select: {
                             id: true,

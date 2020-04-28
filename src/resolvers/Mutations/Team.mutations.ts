@@ -5,12 +5,12 @@ import { Context } from 'utils';
 export function TeamMutations(t: ObjectDefinitionBlock<'Mutation'>): void {
     t.field('checkTeamName', {
         type: 'Boolean',
-        description: 'Check if a team by that name already exists.',
+        description: 'Check if a team by the given name already exists.',
         args: {
-            name: stringArg({ required: true }),
+            teamName: stringArg({ required: true, description: 'Team name to check against.' }),
         },
-        async resolve(_, { name }, ctx: Context) {
-            return !!(await ctx.prisma.team.count({ where: { name } }));
+        async resolve(_, { teamName }, ctx: Context) {
+            return !!(await ctx.prisma.team.count({ where: { name: teamName } }));
         },
     });
 }

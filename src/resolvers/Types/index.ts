@@ -5,8 +5,11 @@ export const UserSignupData = objectType({
     definition(t) {
         t.field('user', {
             type: 'User',
+            description: 'The user object.',
         });
-        t.string('token');
+        t.string('token', {
+            description: 'The encoded JWT token.',
+        });
     },
 });
 
@@ -15,7 +18,10 @@ export const TeamSignupData = objectType({
     definition(t) {
         t.field('team', {
             type: 'Team',
+            description: 'The team object.',
         });
-        t.string('token');
+        t.string('token', {
+            description: 'The encoded  JWT token.',
+        });
     },
 });
