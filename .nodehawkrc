@@ -3,5 +3,5 @@
         "src",
         ".env"
     ],
-    "exec": "ts-node -C ttypescript src/index.ts"
+    "exec": "concurrently \"ts-node -C ttypescript src/index.ts\" \"ts-node-dev --respawn -r tsconfig-paths/register -T src/schema\" --kill-others"
 }

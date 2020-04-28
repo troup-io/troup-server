@@ -37,7 +37,8 @@ export default {
         bootstrap: true,
     },
     'generate:typings': {
-        command: 'ts-node -r tsconfig-paths/register -T src/schema',
+        command:
+            './node_modules/.bin/ts-node-dev --respawn -r tsconfig-paths/register -T src/schema',
         sequence: 4,
         bootstrap: true,
     },
