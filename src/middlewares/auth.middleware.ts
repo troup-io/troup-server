@@ -1,14 +1,12 @@
-import * as jwt from 'jsonwebtoken';
-
 import { ContextParameters } from 'graphql-yoga/dist/types';
 import { tokenRetriever } from 'utils';
 
-export function middleware_Auth() {
+export function middlewareAuth() {
     return function(
         request: ContextParameters['request'],
         response: ContextParameters['response'],
         next: Function
-    ) {
+    ): void {
         const bearer = request.get('Bearer');
         if (!bearer) {
             return next();
@@ -25,6 +23,6 @@ export function middleware_Auth() {
             response.removeHeader('teamId');
         }
 
-        return next();
+        next();
     };
 }

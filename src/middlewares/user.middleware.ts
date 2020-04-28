@@ -2,12 +2,12 @@ import { ContextParameters } from 'graphql-yoga/dist/types';
 
 import { Context } from 'utils';
 
-export function middleware_User(prisma: Context['prisma']) {
+export function middlewareUser(prisma: Context['prisma']) {
     return async function(
         request: ContextParameters['request'],
         response: ContextParameters['response'],
         next: Function
-    ) {
+    ): Promise<void> {
         delete request.headers.isSuperAdmin;
 
         if (request.headers.su) {
@@ -33,6 +33,6 @@ export function middleware_User(prisma: Context['prisma']) {
             }
         }
 
-        return next();
+        next();
     };
 }
