@@ -5,7 +5,7 @@ import { Context } from 'utils';
 export function TeamQueries(t: ObjectDefinitionBlock<'Query'>): void {
     t.field('team', {
         type: 'Team',
-        description: 'Fetch the data of a particular Team by ID',
+        description: 'Fetch the data of a particular team by ID',
         args: {
             id: stringArg({ required: true }),
         },
@@ -13,6 +13,4 @@ export function TeamQueries(t: ObjectDefinitionBlock<'Query'>): void {
             return await ctx.prisma.team.findOne({ where: { id } });
         },
     });
-
-    // t.crud.troups({ ordering: true, filtering: true });
 }

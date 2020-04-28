@@ -7,11 +7,7 @@ export const User = objectType({
         t.model.createdAt();
         t.model.updatedAt();
         t.model.email();
-        t.string('profileId', {
-            resolve() {
-                return t.model.profile().id.toString();
-            },
-        });
         t.model.profile();
+        t.model.teams();
     },
 });

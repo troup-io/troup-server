@@ -10,5 +10,6 @@ export const Team = objectType({
         t.model.adminEmail();
         t.model.maxMembers();
         t.model.members();
+        t.model.userId();
     },
 });

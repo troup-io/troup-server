@@ -1,8 +1,16 @@
-import { ObjectDefinitionBlock } from 'nexus/dist/core';
+import { ObjectDefinitionBlock, stringArg } from 'nexus/dist/core';
 
-// import { Context } from 'utils';
+import { Context } from 'utils';
 
-export function UserQueries(t: ObjectDefinitionBlock<'Query'>) {
-    t.crud.user();
-    t.crud.users({ ordering: true, filtering: true });
+export function UserQueries(t: ObjectDefinitionBlock<'Query'>): void {
+    t.field('checkIfUserExists', {
+        type: 'Boolean',
+        description: 'Check if a user already exists while creating',
+        args: {
+            email: stringArg({ required: true }),
+        },
+        async resolve(_, { email }, ctx: Context) {
+            return !!(await ctx.prisma.user.count({ where: { email } }));
+        },
+    });
 }
