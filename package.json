@@ -2,8 +2,9 @@
     "name": "@troup/server",
     "private": true,
     "version": "0.0.0",
-    "author": "Samrith Shankar <samrith.shankar@outlook.com>",
+    "author": "hello@troupapp.com",
     "repository": "git@github.com:troup-io/troup-server.git",
+    "license": "Apache 2.0",
     "scripts": {
         "bootstrap": "ts-node cmd bootstrap",
         "start": "ts-node cmd app start",
