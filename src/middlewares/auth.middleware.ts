@@ -1,12 +1,8 @@
-import { ContextParameters } from 'graphql-yoga/dist/types';
 import { tokenRetriever } from 'utils';
+import { Request, Response } from 'express-serve-static-core';
 
 export function middlewareAuth() {
-    return function(
-        request: ContextParameters['request'],
-        response: ContextParameters['response'],
-        next: Function
-    ): void {
+    return function(request: Request, response: Response, next: Function): void {
         const bearer = request.get('Bearer');
         if (!bearer) {
             return next();

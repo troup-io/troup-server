@@ -1,12 +1,12 @@
 import { GraphQLError } from 'graphql';
 
-export function formatError(error: GraphQLError) {
-    const { message, path, locations, originalError } = error;
+type ErrorDefinition = {
+    message: string;
+    path: unknown;
+    locations: unknown;
+};
 
-    return {
-        message,
-        path,
-        locations,
-        originalError,
-    };
+export function formatError(error: GraphQLError): GraphQLError {
+    error.message = error.message.replace(/(GraphQL\s*Error)|(Network\s*Error)/gi, '');
+    return error;
 }

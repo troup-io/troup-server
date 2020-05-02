@@ -1,14 +1,10 @@
-import { ContextParameters } from 'graphql-yoga/dist/types';
+import { Request, Response } from 'express-serve-static-core';
 
 import { Context } from 'utils';
 
 export function middlewareUser(prisma: Context['prisma']) {
-    return async function(
-        request: ContextParameters['request'],
-        response: ContextParameters['response'],
-        next: Function
-    ): Promise<void> {
-        delete request.headers.isSuperAdmin;
+    return async function(request: Request, response: Response, next: Function): Promise<void> {
+        delete request.headers.isSUperAdmin;
 
         if (request.headers.su) {
             try {

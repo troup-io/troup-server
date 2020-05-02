@@ -1,6 +1,6 @@
 import { mutationType } from 'nexus';
 
-import { AuthMutations } from './Auth.mutations';
+import { AuthMutations } from './Auth';
 import { UserMutations } from './User.mutations';
 import { TeamMutations } from './Team.mutations';
 

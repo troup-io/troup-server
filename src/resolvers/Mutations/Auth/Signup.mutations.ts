@@ -1,10 +1,9 @@
 import * as bcrypt from 'bcryptjs';
-import * as jwt from 'jsonwebtoken';
 import { ObjectDefinitionBlock, stringArg } from 'nexus/dist/core';
 
-import { Context, checkPasswordMatch, checkUserTeam, tokenSigner } from 'utils';
+import { Context, tokenSigner } from 'utils';
 
-export function AuthMutations(t: ObjectDefinitionBlock<'Mutation'>): void {
+export function SignupMutations(t: ObjectDefinitionBlock<'Mutation'>): void {
     t.field('signupUser', {
         type: 'UserSignupData',
         description: "Team creation flow. The created user is the team's owner.",
@@ -117,61 +116,23 @@ export function AuthMutations(t: ObjectDefinitionBlock<'Mutation'>): void {
                 },
             });
 
-            return {
-                team,
-                token: tokenSigner(team.owner.id),
-            };
-        },
-    });
-
-    t.field('signin', {
-        type: 'UserSignupData',
-        description: 'Sign in with an email and return the user and user.',
-        args: {
-            email: stringArg({
-                required: true,
-                description: "The user's email address.",
-            }),
-            password: stringArg({
-                required: true,
-                description: "The user's password.",
-            }),
-            teamId: stringArg({
-                required: true,
-                description: 'The ID of the team to sign in to.',
-            }),
-        },
-        async resolve(_, { email, password, teamId }, ctx: Context) {
-            const user = await ctx.prisma.user.findOne({
-                where: { email },
-                include: {
-                    profile: true,
+            const user = await ctx.prisma.user.update({
+                where: {
+                    id: team.owner.id,
+                },
+                data: {
                     teams: {
-                        where: {
-                            id: teamId,
-                        },
-                        select: {
-                            id: true,
+                        connect: {
+                            id: team.id,
                         },
                     },
                 },
             });
 
-            if (!user) {
-                throw new Error(`No such user found for email: ${email}`);
-            }
-
-            if (!checkUserTeam(user)) {
-                throw new Error(`User (${email}) is not a member of this team.`);
-            }
-
-            if (!(await checkPasswordMatch(user, password))) {
-                throw new Error('Invalid password');
-            }
-
             return {
-                token: jwt.sign({ userId: user.id }, process.env.APP_SECRET),
                 user,
+                team,
+                token: tokenSigner(team.owner.id),
             };
         },
     });

@@ -1,25 +1,13 @@
 import * as bcrypt from 'bcryptjs';
 import * as jwt from 'jsonwebtoken';
-import { ContextParameters } from 'graphql-yoga/dist/types';
-import { GraphQLServer } from 'graphql-yoga';
-
+import { ExpressContext } from 'apollo-server-express/dist/ApolloServer';
 import { PrismaClient, UserGetPayload } from '@prisma/client';
 
 export interface Context {
+    request: ExpressContext['req'];
+    response: ExpressContext['res'];
+    connection?: ExpressContext['connection'];
     prisma: PrismaClient;
-    request: ContextParameters['request'];
-    response: ContextParameters['response'];
-}
-
-export function middlewareApplicator(server: GraphQLServer, prisma: Context['prisma']): Function {
-    return function customMiddlewareApplier(middleware: Function, shouldPass?: boolean): void {
-        if (shouldPass) {
-            server.express.use(middleware(prisma));
-            return;
-        }
-
-        server.express.use(middleware());
-    };
 }
 
 export function tokenSigner(userId: string, teamId = ''): string {

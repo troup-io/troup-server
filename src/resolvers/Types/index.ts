@@ -20,6 +20,10 @@ export const TeamSignupData = objectType({
             type: 'Team',
             description: 'The team object.',
         });
+        t.field('user', {
+            type: 'User',
+            description: 'The user object.',
+        });
         t.string('token', {
             description: 'The encoded  JWT token.',
         });
