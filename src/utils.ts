@@ -10,16 +10,20 @@ export interface Context {
     prisma: PrismaClient;
 }
 
-export function tokenSigner(userId: string, teamId = ''): string {
-    return jwt.sign({ context: `${userId}.${teamId}` }, process.env.APP_SECRET);
+export function tokenSigner(userId: string): string {
+    return jwt.sign({ userId }, process.env.APP_SECRET, {
+        expiresIn: '2 days',
+    });
 }
 
-export function tokenRetriever(token: string): { userId: string; teamId: string } {
-    const result = jwt.verify(token as string, process.env.APP_SECRET) as any;
+export function tokenRetriever(bearerToken: string, ignoreExpiration = false): { userId: string } {
+    const token = bearerToken.split('Bearer ').pop();
+    const { userId } = jwt.verify(token as string, process.env.APP_SECRET, {
+        ignoreExpiration,
+    }) as any;
 
     return {
-        userId: 'lol',
-        teamId: 'haha',
+        userId,
     };
 }
 

@@ -25,12 +25,6 @@ export function SignupMutations(t: ObjectDefinitionBlock<'Mutation'>): void {
         },
         async resolve(_, { email, password, firstName, lastName, teamId }, ctx: Context) {
             const hashedPassword = await bcrypt.hash(password, 10);
-
-            const existingUser = await ctx.prisma.user.findOne({ where: { email } });
-            if (existingUser) {
-                throw new Error('User already exists!');
-            }
-
             const user = await ctx.prisma.user.create({
                 data: {
                     email,
@@ -91,7 +85,7 @@ export function SignupMutations(t: ObjectDefinitionBlock<'Mutation'>): void {
                 throw new Error('Team already exists.');
             }
 
-            const team = await ctx.prisma.team.create({
+            const { owner, ...team } = await ctx.prisma.team.create({
                 data: {
                     name: teamName,
                     owner: {
@@ -108,31 +102,14 @@ export function SignupMutations(t: ObjectDefinitionBlock<'Mutation'>): void {
                     },
                 },
                 include: {
-                    owner: {
-                        select: {
-                            id: true,
-                        },
-                    },
-                },
-            });
-
-            const user = await ctx.prisma.user.update({
-                where: {
-                    id: team.owner.id,
-                },
-                data: {
-                    teams: {
-                        connect: {
-                            id: team.id,
-                        },
-                    },
+                    owner: true,
                 },
             });
 
             return {
-                user,
+                user: owner,
                 team,
-                token: tokenSigner(team.owner.id),
+                token: tokenSigner(owner.id),
             };
         },
     });

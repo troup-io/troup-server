@@ -6,6 +6,7 @@ import { isOwnResource } from './is-own-resource';
 export const permissions = shield(
     {
         Query: {
+            teamIdFromName: allow,
             '*': chain(isAuthenticated, isOwnResource),
         },
         Mutation: {
@@ -13,8 +14,7 @@ export const permissions = shield(
             signupTeam: allow,
             signinUser: allow,
             signinTeam: allow,
-            deleteOneUser: allow,
-            deleteOneUserProfile: allow,
+            refreshAuthToken: allow,
             '*': chain(isAuthenticated, isOwnResource),
         },
     },
