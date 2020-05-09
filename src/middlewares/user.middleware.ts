@@ -9,7 +9,7 @@ export function middlewareUser(prisma: Context['prisma']) {
         if (request.headers.su) {
             try {
                 const user = await prisma.user.findOne({
-                    where: { id: request.headers.userId as string },
+                    where: { id: parseInt(request.headers.userId as string, 10) },
                     select: {
                         profile: {
                             select: {

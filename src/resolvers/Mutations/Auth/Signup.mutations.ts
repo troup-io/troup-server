@@ -1,5 +1,5 @@
 import * as bcrypt from 'bcryptjs';
-import { ObjectDefinitionBlock, stringArg } from 'nexus/dist/core';
+import { ObjectDefinitionBlock, stringArg, intArg } from 'nexus/dist/core';
 
 import { Context, tokenSigner } from 'utils';
 
@@ -18,7 +18,7 @@ export function SignupMutations(t: ObjectDefinitionBlock<'Mutation'>): void {
             }),
             firstName: stringArg({ required: true, description: "The user's first name." }),
             lastName: stringArg({ required: true, description: "The user's last name." }),
-            teamId: stringArg({
+            teamId: intArg({
                 required: true,
                 description: 'The ID of the team sign up with.',
             }),
@@ -35,7 +35,7 @@ export function SignupMutations(t: ObjectDefinitionBlock<'Mutation'>): void {
                             lastName,
                         },
                     },
-                    teams: {
+                    memberTeams: {
                         connect: {
                             id: teamId,
                         },

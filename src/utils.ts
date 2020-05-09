@@ -10,20 +10,20 @@ export interface Context {
     prisma: PrismaClient;
 }
 
-export function tokenSigner(userId: string): string {
+export function tokenSigner(userId: number): string {
     return jwt.sign({ userId }, process.env.APP_SECRET, {
         expiresIn: '2 days',
     });
 }
 
-export function tokenRetriever(bearerToken: string, ignoreExpiration = false): { userId: string } {
+export function tokenRetriever(bearerToken: string, ignoreExpiration = false): { userId: number } {
     const token = bearerToken.split('Bearer ').pop();
     const { userId } = jwt.verify(token as string, process.env.APP_SECRET, {
         ignoreExpiration,
     }) as any;
 
     return {
-        userId,
+        userId: parseInt(userId, 10),
     };
 }
 
@@ -35,7 +35,9 @@ export async function checkPasswordMatch(
 }
 
 export function checkUserTeam(
-    user: UserGetPayload<{ include: { teams: { select: { id: true } } } }>
+    user: UserGetPayload<{
+        include: { memberTeams: { select: { id: true } }; ownerTeams: { select: { id: true } } };
+    }>
 ): boolean {
-    return !!user.teams.length;
+    return !!user.memberTeams.length && !!user.ownerTeams.length;
 }

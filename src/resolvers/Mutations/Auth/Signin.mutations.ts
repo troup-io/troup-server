@@ -1,7 +1,7 @@
 import * as jwt from 'jsonwebtoken';
-import { ObjectDefinitionBlock, stringArg } from 'nexus/dist/core';
+import { ObjectDefinitionBlock, stringArg, intArg } from 'nexus/dist/core';
 
-import { Context, checkPasswordMatch, checkUserTeam } from 'utils';
+import { Context, checkPasswordMatch, checkUserTeam, tokenSigner } from 'utils';
 import { UserInputError } from 'apollo-server-express';
 
 export function SigninMutations(t: ObjectDefinitionBlock<'Mutation'>): void {
@@ -23,10 +23,18 @@ export function SigninMutations(t: ObjectDefinitionBlock<'Mutation'>): void {
                 where: { email },
                 include: {
                     profile: true,
-                    teams: {
+                    memberTeams: {
                         select: {
                             id: true,
                             name: true,
+                            displayName: true,
+                        },
+                    },
+                    ownerTeams: {
+                        select: {
+                            id: true,
+                            name: true,
+                            displayName: true,
                         },
                     },
                 },
@@ -41,7 +49,7 @@ export function SigninMutations(t: ObjectDefinitionBlock<'Mutation'>): void {
             }
 
             return {
-                token: jwt.sign({ userId: user.id }, process.env.APP_SECRET),
+                token: tokenSigner(user.id),
                 user,
             };
         },
@@ -59,15 +67,34 @@ export function SigninMutations(t: ObjectDefinitionBlock<'Mutation'>): void {
                 required: true,
                 description: "The user's password.",
             }),
+            teamId: intArg({
+                required: true,
+                description: "The team's ID.",
+            }),
         },
-        async resolve(_, { email, password }, ctx: Context) {
+        async resolve(_, { email, password, teamId: id }, ctx: Context) {
             const user = await ctx.prisma.user.findOne({
                 where: { email },
                 include: {
                     profile: true,
-                    teams: {
+                    memberTeams: {
+                        where: {
+                            id,
+                        },
                         select: {
                             id: true,
+                            name: true,
+                            displayName: true,
+                        },
+                    },
+                    ownerTeams: {
+                        where: {
+                            id,
+                        },
+                        select: {
+                            id: true,
+                            name: true,
+                            displayName: true,
                         },
                     },
                 },
@@ -86,7 +113,7 @@ export function SigninMutations(t: ObjectDefinitionBlock<'Mutation'>): void {
             }
 
             return {
-                token: jwt.sign({ userId: user.id }, process.env.APP_SECRET),
+                token: tokenSigner(user.id),
                 user,
             };
         },

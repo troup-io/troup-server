@@ -38,3 +38,18 @@ export const TokenRefreshData = objectType({
         });
     },
 });
+
+export const TeamAuthInfoData = objectType({
+    name: 'TeamAuthInfoData',
+    definition(t) {
+        t.int('id', {
+            description: "The team's ID",
+        });
+        t.string('name', {
+            description: 'The unique name of the team.',
+        });
+        t.string('displayName', {
+            description: 'The display name of the team.',
+        });
+    },
+});

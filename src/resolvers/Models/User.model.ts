@@ -8,6 +8,7 @@ export const User = objectType({
         t.model.updatedAt();
         t.model.email();
         t.model.profile();
-        t.model.teams();
+        t.model.ownerTeams();
+        t.model.memberTeams();
     },
 });

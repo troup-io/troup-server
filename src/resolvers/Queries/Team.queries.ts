@@ -4,9 +4,9 @@ import { ApolloError } from 'apollo-server-express';
 import { Context } from 'utils';
 
 export function TeamQueries(t: ObjectDefinitionBlock<'Query'>): void {
-    t.field('teamIdFromName', {
-        type: 'String',
-        description: 'Fetch the ID of a particular team by name.',
+    t.field('teamDetailsFromName', {
+        type: 'TeamAuthInfoData',
+        description: 'Fetch the information of a particular team by name.',
         args: {
             name: stringArg({ required: true, description: "Team's name to fetch data for." }),
         },
@@ -15,13 +15,20 @@ export function TeamQueries(t: ObjectDefinitionBlock<'Query'>): void {
                 throw new ApolloError('Please provide an ID or name to query the team by.');
             }
 
-            const team = await ctx.prisma.team.findOne({ where: { name } });
+            const team = await ctx.prisma.team.findOne({
+                where: { name },
+                select: {
+                    id: true,
+                    name: true,
+                    displayName: true,
+                },
+            });
 
             if (!team) {
                 throw new ApolloError('No such team exists.');
             }
 
-            return team.id;
+            return team;
         },
     });
 }

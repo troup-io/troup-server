@@ -10,7 +10,7 @@ export function middlewareAuth() {
 
         try {
             const { userId } = tokenRetriever(bearer);
-            request.headers.userId = userId;
+            request.headers.userId = userId.toString();
         } catch (error) {
             response.removeHeader('authorization');
             response.removeHeader('userId');
