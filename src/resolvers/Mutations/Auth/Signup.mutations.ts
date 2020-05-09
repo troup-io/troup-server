@@ -73,18 +73,6 @@ export function SignupMutations(t: ObjectDefinitionBlock<'Mutation'>): void {
         async resolve(_, { email, password, firstName, lastName, teamName }, ctx: Context) {
             const hashedPassword = await bcrypt.hash(password, 10);
 
-            const existingUser = !!(await ctx.prisma.user.count({ where: { email } }));
-            if (existingUser) {
-                throw new Error('User already exists!');
-            }
-
-            const existingTeam = !!(await ctx.prisma.team.count({
-                where: { name: teamName },
-            }));
-            if (existingTeam) {
-                throw new Error('Team already exists.');
-            }
-
             const { owner, ...team } = await ctx.prisma.team.create({
                 data: {
                     name: teamName,
