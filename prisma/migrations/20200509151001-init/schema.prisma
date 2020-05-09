@@ -1,0 +1,49 @@
+datasource db {
+  provider = "postgresql"
+  url = "***"
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Team {
+  id          Int      @default(autoincrement()) @id
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  maxMembers  Int      @default(25)
+  name        String   @unique
+  displayName String?
+  adminEmail  String?
+  owner       User     @relation(fields: [ownerId], references: [id])
+  ownerId     Int
+  members     User[]   @relation("_UsersOnTeam", references: [id])
+}
+
+model User {
+  id          Int         @default(autoincrement()) @id
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+  email       String      @unique
+  password    String
+  profile     UserProfile
+  memberTeams Team[]      @relation("_UsersOnTeam")
+  ownerTeams  Team[]
+}
+
+model UserProfile {
+  id                     Int      @default(autoincrement()) @id
+  createdAt              DateTime @default(now())
+  updatedAt              DateTime @updatedAt
+  firstName              String
+  lastName               String
+  isSuperAdmin           Boolean  @default(false)
+  professionalCompetence String?
+  utm_source             String?
+  utm_campaign           String?
+  utm_medium             String?
+  utm_term               String?
+  utm_content            String?
+  user                   User     @relation(fields: [userId], references: [id])
+  userId                 Int
+}

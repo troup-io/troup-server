@@ -31,7 +31,7 @@
       "tag": "CreateField",
       "model": "Team",
       "field": "id",
-      "type": "String",
+      "type": "Int",
       "arity": "Required"
     },
     {
@@ -57,7 +57,7 @@
         "directive": "default"
       },
       "argument": "",
-      "value": "uuid()"
+      "value": "autoincrement()"
     },
     {
       "tag": "CreateDirective",
@@ -173,6 +173,13 @@
     {
       "tag": "CreateField",
       "model": "Team",
+      "field": "displayName",
+      "type": "String",
+      "arity": "Optional"
+    },
+    {
+      "tag": "CreateField",
+      "model": "Team",
       "field": "adminEmail",
       "type": "String",
       "arity": "Optional"
@@ -207,7 +214,7 @@
         "directive": "relation"
       },
       "argument": "fields",
-      "value": "[userId]"
+      "value": "[ownerId]"
     },
     {
       "tag": "CreateArgument",
@@ -226,8 +233,8 @@
     {
       "tag": "CreateField",
       "model": "Team",
-      "field": "userId",
-      "type": "String",
+      "field": "ownerId",
+      "type": "Int",
       "arity": "Required"
     },
     {
@@ -284,7 +291,7 @@
       "tag": "CreateField",
       "model": "User",
       "field": "id",
-      "type": "String",
+      "type": "Int",
       "arity": "Required"
     },
     {
@@ -310,7 +317,7 @@
         "directive": "default"
       },
       "argument": "",
-      "value": "uuid()"
+      "value": "autoincrement()"
     },
     {
       "tag": "CreateDirective",
@@ -406,55 +413,9 @@
       "arity": "Required"
     },
     {
-      "tag": "CreateDirective",
-      "location": {
-        "path": {
-          "tag": "Field",
-          "model": "User",
-          "field": "profile"
-        },
-        "directive": "relation"
-      }
-    },
-    {
-      "tag": "CreateArgument",
-      "location": {
-        "tag": "Directive",
-        "path": {
-          "tag": "Field",
-          "model": "User",
-          "field": "profile"
-        },
-        "directive": "relation"
-      },
-      "argument": "fields",
-      "value": "[profileId]"
-    },
-    {
-      "tag": "CreateArgument",
-      "location": {
-        "tag": "Directive",
-        "path": {
-          "tag": "Field",
-          "model": "User",
-          "field": "profile"
-        },
-        "directive": "relation"
-      },
-      "argument": "references",
-      "value": "[id]"
-    },
-    {
       "tag": "CreateField",
       "model": "User",
-      "field": "profileId",
-      "type": "String",
-      "arity": "Required"
-    },
-    {
-      "tag": "CreateField",
-      "model": "User",
-      "field": "teams",
+      "field": "memberTeams",
       "type": "Team",
       "arity": "List"
     },
@@ -464,7 +425,7 @@
         "path": {
           "tag": "Field",
           "model": "User",
-          "field": "teams"
+          "field": "memberTeams"
         },
         "directive": "relation"
       }
@@ -476,7 +437,7 @@
         "path": {
           "tag": "Field",
           "model": "User",
-          "field": "teams"
+          "field": "memberTeams"
         },
         "directive": "relation"
       },
@@ -484,18 +445,11 @@
       "value": "\"_UsersOnTeam\""
     },
     {
-      "tag": "CreateArgument",
-      "location": {
-        "tag": "Directive",
-        "path": {
-          "tag": "Field",
-          "model": "User",
-          "field": "teams"
-        },
-        "directive": "relation"
-      },
-      "argument": "references",
-      "value": "[id]"
+      "tag": "CreateField",
+      "model": "User",
+      "field": "ownerTeams",
+      "type": "Team",
+      "arity": "List"
     },
     {
       "tag": "CreateModel",
@@ -505,7 +459,7 @@
       "tag": "CreateField",
       "model": "UserProfile",
       "field": "id",
-      "type": "String",
+      "type": "Int",
       "arity": "Required"
     },
     {
@@ -531,7 +485,7 @@
         "directive": "default"
       },
       "argument": "",
-      "value": "uuid()"
+      "value": "autoincrement()"
     },
     {
       "tag": "CreateDirective",
@@ -681,6 +635,59 @@
       "field": "utm_content",
       "type": "String",
       "arity": "Optional"
+    },
+    {
+      "tag": "CreateField",
+      "model": "UserProfile",
+      "field": "user",
+      "type": "User",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "UserProfile",
+          "field": "user"
+        },
+        "directive": "relation"
+      }
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "UserProfile",
+          "field": "user"
+        },
+        "directive": "relation"
+      },
+      "argument": "fields",
+      "value": "[userId]"
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "UserProfile",
+          "field": "user"
+        },
+        "directive": "relation"
+      },
+      "argument": "references",
+      "value": "[id]"
+    },
+    {
+      "tag": "CreateField",
+      "model": "UserProfile",
+      "field": "userId",
+      "type": "Int",
+      "arity": "Required"
     }
   ]
 }
