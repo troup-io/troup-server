@@ -11,10 +11,10 @@ export const schema = makeSchema({
         nullabilityGuardPlugin({
             shouldGuard: !process.env.NODE_ENV || process.env.NODE_ENV !== 'development',
             fallbackValues: {
-                Int: (): number => 0,
                 String: (): string => '',
-                DateTime: (): string => new Date().toISOString(),
                 Boolean: (): boolean => false,
+                Int: (): number => 0,
+                DateTime: (): string => new Date().toISOString(),
             },
         }),
         fieldAuthorizePlugin(),
