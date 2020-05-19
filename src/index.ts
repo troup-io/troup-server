@@ -9,7 +9,6 @@ import { express as voyagerMiddleware } from 'graphql-voyager/middleware';
 import { PrismaClient } from '@prisma/client';
 
 import { formatError } from 'lib/formatError';
-import { formatResponse } from 'lib/formatResponse';
 import { middlewareApplicator, middlewareAuth, middlewareUser } from 'middlewares';
 
 import { schema as baseSchema } from 'schema';
@@ -34,7 +33,6 @@ const server = new ApolloServer({
         };
     },
     formatError,
-    formatResponse,
 });
 
 const app: express.Application = express();
