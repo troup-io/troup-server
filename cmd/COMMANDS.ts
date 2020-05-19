@@ -24,7 +24,7 @@ export default {
         bootstrap: true,
     },
     'db:setup': {
-        command: 'yarn prisma2 migrate up --experimental',
+        command: 'yarn prisma migrate up --experimental',
         sequence: 2,
         bootstrap: true,
     },
@@ -32,7 +32,7 @@ export default {
         command: './node_modules/.bin/ts-node cmd/runners/prune-database',
     },
     'generate:client': {
-        command: 'yarn prisma2 generate',
+        command: 'yarn prisma generate',
         sequence: 3,
         bootstrap: true,
     },
