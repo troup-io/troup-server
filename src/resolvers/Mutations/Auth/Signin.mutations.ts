@@ -56,7 +56,7 @@ export function SigninMutations(t: ObjectDefinitionBlock<'Mutation'>): void {
     });
 
     t.field('signinTeam', {
-        type: 'UserSignupData',
+        type: 'TeamSigninData',
         description: 'Team sign in with an email and return the token and user.',
         args: {
             email: stringArg({
@@ -76,7 +76,12 @@ export function SigninMutations(t: ObjectDefinitionBlock<'Mutation'>): void {
             const user = await ctx.prisma.user.findOne({
                 where: { email },
                 include: {
-                    profile: true,
+                    profile: {
+                        select: {
+                            firstName: true,
+                            lastName: true,
+                        },
+                    },
                     memberTeams: {
                         where: {
                             id,

@@ -30,6 +30,19 @@ export const TeamSignupData = objectType({
     },
 });
 
+export const TeamSigninData = objectType({
+    name: 'TeamSigninData',
+    definition(t) {
+        t.field('user', {
+            type: 'User',
+            description: 'The user object.',
+        });
+        t.string('token', {
+            description: 'The encoded JWT token.',
+        });
+    },
+});
+
 export const TokenRefreshData = objectType({
     name: 'TokenRefreshData',
     definition(t) {
