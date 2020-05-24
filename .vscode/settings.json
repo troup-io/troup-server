@@ -18,9 +18,7 @@
     "editor.codeActionsOnSave": {
         "source.fixAll.eslint": true
     },
-    "editor.tokenColorCustomizations": {
-        "semanticHighlighting": true
-    },
+    "editor.semanticHighlighting.enabled": true,
     "[prisma]": {
         "editor.defaultFormatter": "Prisma.prisma"
     },
@@ -43,7 +41,8 @@
         "**/CVS": true,
         "**/.DS_Store": true,
         "**/node_modules": true,
-        "**/yarn.lock": true
+        "**/yarn.lock": true,
+        "**/dist": true
     },
     "search.exclude": {
         "**/node_modules": true,
