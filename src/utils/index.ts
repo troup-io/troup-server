@@ -1,14 +1,6 @@
 import * as bcrypt from 'bcryptjs';
 import * as jwt from 'jsonwebtoken';
-import { ExpressContext } from 'apollo-server-express/dist/ApolloServer';
-import { PrismaClient, UserGetPayload } from '@prisma/client';
-
-export interface Context {
-    request: ExpressContext['req'];
-    response: ExpressContext['res'];
-    connection?: ExpressContext['connection'];
-    prisma: PrismaClient;
-}
+import { UserGetPayload } from '@prisma/client';
 
 export function tokenSigner(userId: number): string {
     return jwt.sign({ userId }, process.env.APP_SECRET, {
