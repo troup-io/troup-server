@@ -1,8 +1,7 @@
 import { Request, Response } from 'express-serve-static-core';
+import { PrismaClient } from '@prisma/client';
 
-import { Context } from 'utils';
-
-export function middlewareUser(prisma: Context['prisma']) {
+export function middlewareUser(prisma: PrismaClient) {
     return async function(request: Request, response: Response, next: Function): Promise<void> {
         delete request.headers.isSUperAdmin;
 

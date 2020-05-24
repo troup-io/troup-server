@@ -1,5 +1,6 @@
-import { tokenRetriever } from 'utils';
 import { Request, Response } from 'express-serve-static-core';
+
+import { tokenRetriever } from 'utils';
 
 export function middlewareAuth() {
     return function(request: Request, response: Response, next: Function): void {

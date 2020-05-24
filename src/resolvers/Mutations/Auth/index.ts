@@ -1,22 +1,21 @@
 import { ObjectDefinitionBlock } from 'nexus/dist/core';
 
+import { Context } from 'services/Context';
+
+import { TokenRefreshData } from 'resolvers/Types';
+
 import { SigninMutations } from './Signin.mutations';
 import { SignupMutations } from './Signup.mutations';
-
-import { Context, tokenRetriever, tokenSigner } from 'utils';
 
 export function AuthMutations(t: ObjectDefinitionBlock<'Mutation'>): void {
     SigninMutations(t);
     SignupMutations(t);
 
     t.field('refreshAuthToken', {
-        type: 'TokenRefreshData',
+        type: TokenRefreshData,
         description: "Refresh a user's token if the user has chosen to remember them.",
         resolve(_, __, ctx: Context) {
-            const { userId } = tokenRetriever(ctx.request.headers.authorization, true);
-            return {
-                token: tokenSigner(userId),
-            };
+            return ctx.auth.core.refreshAuthToken();
         },
     });
 }

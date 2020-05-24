@@ -1,6 +1,6 @@
 import { ObjectDefinitionBlock, stringArg } from 'nexus/dist/core';
 
-import { Context } from 'utils';
+import { Context } from 'services/Context';
 
 export function UserQueries(t: ObjectDefinitionBlock<'Query'>): void {
     t.field('checkIfUserExists', {
@@ -9,8 +9,8 @@ export function UserQueries(t: ObjectDefinitionBlock<'Query'>): void {
         args: {
             email: stringArg({ required: true, description: "User's email to check against." }),
         },
-        async resolve(_, { email }, ctx: Context) {
-            return !!(await ctx.prisma.user.count({ where: { email } }));
+        async resolve(_, data, ctx: Context) {
+            return await ctx.user.checkIfExists(data);
         },
     });
 }

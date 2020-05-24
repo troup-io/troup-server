@@ -1,13 +1,13 @@
 import { Application } from 'express';
 
-import { Context } from '../utils';
+import { PrismaClient } from '@prisma/client';
 
 export { middlewareAuth } from './auth.middleware';
 export { middlewareUser } from './user.middleware';
 
 export function middlewareApplicator(
     app: Application,
-    prisma: Context['prisma'],
+    prisma: PrismaClient,
     middlewares: Array<
         | Function
         | [

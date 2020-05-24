@@ -1,7 +1,7 @@
 import { objectType } from 'nexus';
 
-export const UserSignupData = objectType({
-    name: 'UserSignupData',
+export const UserData = objectType({
+    name: 'UserData',
     definition(t) {
         t.field('user', {
             type: 'User',

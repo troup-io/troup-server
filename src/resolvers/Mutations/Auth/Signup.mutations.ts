@@ -1,11 +1,12 @@
-import * as bcrypt from 'bcryptjs';
 import { ObjectDefinitionBlock, stringArg, intArg } from 'nexus/dist/core';
 
-import { Context, tokenSigner } from 'utils';
+import { Context } from 'services/Context';
+
+import { UserData, TeamSignupData } from 'resolvers/Types';
 
 export function SignupMutations(t: ObjectDefinitionBlock<'Mutation'>): void {
     t.field('signupUser', {
-        type: 'UserSignupData',
+        type: UserData,
         description: "Team creation flow. The created user is the team's owner.",
         args: {
             email: stringArg({
@@ -23,35 +24,13 @@ export function SignupMutations(t: ObjectDefinitionBlock<'Mutation'>): void {
                 description: 'The ID of the team sign up with.',
             }),
         },
-        async resolve(_, { email, password, firstName, lastName, teamId }, ctx: Context) {
-            const hashedPassword = await bcrypt.hash(password, 10);
-            const user = await ctx.prisma.user.create({
-                data: {
-                    email,
-                    password: hashedPassword,
-                    profile: {
-                        create: {
-                            firstName,
-                            lastName,
-                        },
-                    },
-                    memberTeams: {
-                        connect: {
-                            id: teamId,
-                        },
-                    },
-                },
-            });
-
-            return {
-                user,
-                token: tokenSigner(user.id),
-            };
+        async resolve(_, data, ctx: Context) {
+            return await ctx.auth.signup.signupUser(data);
         },
     });
 
     t.field('signupTeam', {
-        type: 'TeamSignupData',
+        type: TeamSignupData,
         description:
             'Create a user and the relevant profile, along with the team and relevant profile.',
         args: {
@@ -70,35 +49,8 @@ export function SignupMutations(t: ObjectDefinitionBlock<'Mutation'>): void {
                 description: 'The name of the team being created. Must be unique.',
             }),
         },
-        async resolve(_, { email, password, firstName, lastName, teamName }, ctx: Context) {
-            const hashedPassword = await bcrypt.hash(password, 10);
-
-            const { owner, ...team } = await ctx.prisma.team.create({
-                data: {
-                    name: teamName,
-                    owner: {
-                        create: {
-                            email,
-                            password: hashedPassword,
-                            profile: {
-                                create: {
-                                    firstName,
-                                    lastName,
-                                },
-                            },
-                        },
-                    },
-                },
-                include: {
-                    owner: true,
-                },
-            });
-
-            return {
-                user: owner,
-                team,
-                token: tokenSigner(owner.id),
-            };
+        async resolve(_, data, ctx: Context) {
+            return await ctx.auth.signup.signupTeam(data);
         },
     });
 }
