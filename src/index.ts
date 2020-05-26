@@ -9,7 +9,7 @@ import { PrismaClient } from '@prisma/client';
 
 import { Context, ContextInit } from 'services/Context';
 
-import { formatError } from 'lib/formatError';
+import { formatError, formatResponse } from 'lib/formatter';
 
 import { middlewareApplicator, middlewareAuth, middlewareUser } from 'middlewares';
 
@@ -34,6 +34,7 @@ const server = new ApolloServer({
         });
     },
     formatError,
+    formatResponse,
 });
 
 const app: express.Application = express();
