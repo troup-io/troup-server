@@ -7,7 +7,7 @@ import compression from 'compression';
 import { express as voyagerMiddleware } from 'graphql-voyager/middleware';
 import { PrismaClient } from '@prisma/client';
 
-import { Context, ContextInit } from 'services/Context';
+import { PrismaContext, ContextInit } from 'services/Context';
 
 import { formatError, formatResponse } from 'lib/formatter';
 
@@ -25,13 +25,16 @@ const schema = applyMiddleware(baseSchema, permissions);
 
 const server = new ApolloServer({
     schema,
-    context({ req: request, res: response, connection }): Context {
-        return ContextInit({
-            request,
-            response,
-            connection,
+    context({ req: request, res: response, connection }): PrismaContext {
+        return {
+            ...ContextInit({
+                request,
+                response,
+                connection,
+                prisma,
+            }),
             prisma,
-        });
+        };
     },
     formatError,
     formatResponse,

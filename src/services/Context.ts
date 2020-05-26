@@ -20,6 +20,10 @@ export type Context = {
     user: User;
 };
 
+export type PrismaContext = Context & {
+    prisma: PrismaClient;
+};
+
 export const ContextInit = (ctx: ServerContext): Context => {
     return {
         provider: new Provider(ctx),
