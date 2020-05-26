@@ -1,6 +1,8 @@
-import { UserInputError } from 'apollo-server-express';
+import { AuthenticationError } from 'apollo-server-express';
 
 import { Provider, ServiceMutationArgs, ServiceReturn } from 'services/extenders/Provider';
+
+import { AuthErrors } from 'errors/auth.errors';
 
 import { checkPasswordMatch, tokenSigner, checkUserTeam } from 'utils';
 
@@ -31,11 +33,11 @@ export class Signin extends Provider {
         });
 
         if (!user) {
-            throw new UserInputError(`No such user found for email: ${email}`);
+            throw new AuthenticationError(AuthErrors.INVALID_EMAIL);
         }
 
         if (!(await checkPasswordMatch(user, password))) {
-            throw new UserInputError('Invalid password');
+            throw new AuthenticationError(AuthErrors.INVALID_PASSWORD);
         }
 
         return {
@@ -82,15 +84,15 @@ export class Signin extends Provider {
         });
 
         if (!user) {
-            throw new Error(`No such user found for email: ${email}`);
-        }
-
-        if (!checkUserTeam(user)) {
-            throw new Error(`User (${email}) is not a member of this team.`);
+            throw new AuthenticationError(AuthErrors.INVALID_EMAIL);
         }
 
         if (!(await checkPasswordMatch(user, password))) {
-            throw new Error('Invalid password');
+            throw new AuthenticationError(AuthErrors.INVALID_PASSWORD);
+        }
+
+        if (!checkUserTeam(user)) {
+            throw new AuthenticationError(AuthErrors.INVALID_TEAM_MEMBER);
         }
 
         return {

@@ -1,10 +1,11 @@
+import { ApolloError } from 'apollo-server-express';
+
 import {
     Provider,
     ServiceMutationArgs,
     ServiceReturn,
     ServiceQueryArgs,
 } from 'services/extenders/Provider';
-import { ApolloError } from 'apollo-server-express';
 
 export class Team extends Provider {
     public async checkIfExists({
