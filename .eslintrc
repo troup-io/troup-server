@@ -21,6 +21,7 @@
         "plugin:prettier/recommended"
     ],
     "rules": {
+        "constructor-super": "error",
         "require-await": "error",
         "complexity": ["warn", 10],
         "camelcase": "error",
