@@ -7,6 +7,8 @@ import {
     ServiceQueryArgs,
 } from 'services/extenders/Provider';
 
+import { TeamErrors } from 'errors/team.errors';
+
 export class Team extends Provider {
     public async checkIfExists({
         teamName,
@@ -17,10 +19,6 @@ export class Team extends Provider {
     public async teamDetailsFromName({
         name,
     }: ServiceQueryArgs<'teamDetailsFromName'>): Promise<ServiceReturn<'TeamAuthInfoData'>> {
-        if (!name) {
-            throw new ApolloError('Please provide an ID or name to query the team by.');
-        }
-
         const team = await this.prisma.team.findOne({
             where: { name },
             select: {
@@ -31,7 +29,7 @@ export class Team extends Provider {
         });
 
         if (!team) {
-            throw new ApolloError('No such team exists.');
+            throw new ApolloError(TeamErrors.INVALID_TEAM);
         }
 
         return team;
