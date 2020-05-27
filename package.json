@@ -7,6 +7,7 @@
     "license": "Apache 2.0",
     "scripts": {
         "bootstrap": "ts-node cmd bootstrap",
+        "dev": "ts-node cmd app dev",
         "start": "ts-node cmd app start",
         "build": "ts-node cmd app build",
         "lint": "ts-node cmd app lint",

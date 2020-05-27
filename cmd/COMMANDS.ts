@@ -42,8 +42,11 @@ export default {
         sequence: 4,
         bootstrap: true,
     },
-    'app:start': {
+    'app:dev': {
         command: 'dotenv -- nodehawk',
+    },
+    'app:start': {
+        command: 'rimraf dist && ttsc && node ./dist/server.js',
     },
     'app:build': {
         command: 'rimraf dist && ttsc',
