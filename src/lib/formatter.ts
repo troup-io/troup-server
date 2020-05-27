@@ -7,11 +7,7 @@ export function formatError(error: GraphQLError): GraphQLError {
 }
 
 export function formatResponse(response: Result): Result {
-    return Object.entries(response).reduce((partialResponse, [key, value]) => {
-        if (value) {
-            partialResponse[key] = value;
-        }
+    // TOTO-ss: Explore possibilities and use-cases.
 
-        return partialResponse;
-    }, {});
+    return response;
 }
