@@ -1,87 +1,53 @@
-<p align="center"><a href="https://troup.io" target="_blank"><img src="https://github.com/troup-io/troup-assets/blob/master/banner/logo-light-slim-tag.jpg?raw=true" width="50%" align="center" style="border-radius: 10px" /></a></p>
+<p align="center"><img src="https://repository-images.githubusercontent.com/259775937/548b6b00-9a47-11ea-864f-a6d905f657c6" alt="troup-banner" width="300" /></p>
 
-<p>&nbsp;</p>
+# Troup Server
 
 [![Join the community on Spectrum](https://withspectrum.github.io/badge/badge.svg)](https://spectrum.chat/troup) [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat)](http://makeapullrequest.com) [![first-timers-only](https://img.shields.io/badge/first--timers--only-friendly-blue.svg?style=flat)](https://www.firsttimersonly.com/)
 
-The simplistic documentation to get you up and running with Troup Server. More details coming soon.
+> ### 📢 We are looking for contributors!
+>
+> This project is under heavy development and is on the lookout for contributors both technical and ono-technical. If you are interested in understanding the product and contributing, do get in touch at hello@troupapp.com.
 
-<!-- <h1 align="center"><strong>Boilerplate for an Advanced GraphQL Server w/ TypeScript</strong></h1>
+The Troup client is the frontend app that helps the user address problems that we aim to solve. The client is built atop wonderful open-source projects with the goal of providing a fluid experience to the user.
 
-<br />
+**Languages:**
 
-<div align="center"><img src="https://imgur.com/1MfnLVl.png" /></div>
+-   [Typescript][typescript]
 
-<div align="center"><strong>🚀 Bootstrap your GraphQL server within seconds</strong></div>
-<div align="center">Advanced starter kit for a flexible GraphQL server for TypeScript - based on best practices from the GraphQL community.</div>
+**Libraries:**
 
-## Features
+-   [Apollo Server][apollo-server]
+-   [Prisma][prisma]
+-   [Nexus Schema][nexus-schema]
 
-- **Scalable GraphQL server:** The server uses [`graphql-yoga`](https://github.com/prisma/graphql-yoga) which is based on Apollo Server & Express
-- **Static type generation**: TypeScript types for GraphQL queries & mutations are generated in a build step
-- **Authentication**: Signup and login workflows are ready to use for your users
-- **GraphQL database:** Includes GraphQL database binding to [Prisma](https://www.prismagraphql.com) (running on MySQL)
-- **Tooling**: Out-of-the-box support for [GraphQL Playground](https://github.com/prisma/graphql-playground) & [query performance tracing](https://github.com/apollographql/apollo-tracing)
-- **Extensible**: Simple and flexible [data model](./database/datamodel.graphql) – easy to adjust and extend
-- **No configuration overhead**: Preconfigured [`graphql-config`](https://github.com/prisma/graphql-config) setup
-- **Realtime updates**: Support for GraphQL subscriptions
+## Available scripts
 
-Read more about the idea behind GraphQL boilerplates [here](https://blog.graph.cool/graphql-boilerplates-graphql-create-how-to-setup-a-graphql-project-6428be2f3a5).
+### `yarn dev`
 
-## Requirements
+Start the development server and watch for file changes.
 
-You need to have the [GraphQL CLI](https://github.com/graphql-cli/graphql-cli) installed to bootstrap your GraphQL server using `graphql create`:
+### `yarn build`
 
-```sh
-npm install -g graphql-cli
-```
+Build the production-optimised bundle for deployment.
 
-## Getting started
+### `yarn start`
 
-```sh
-# 1. Bootstrap GraphQL server in directory `my-app`, based on `typescript-advanced` boilerplate
-graphql create my-app --boilerplate typescript-advanced
+Deploy the production-optimised bundle locally to test and simulate the production environment.
 
-# 2. When prompted, deploy the Prisma service to a _public cluster_
+### `yarn lint`
 
-# 3. Navigate to the new project
-cd my-app
+Run the linter, catching out any errors or warning that may occur.
 
-# 4. Start server (runs on http://localhost:4000) and open GraphQL Playground
-yarn start
-```
+### `yarn cmd`
 
-![](https://imgur.com/hElq68i.png)
+The raw command runner. All commands that are listed as `category:command` can be run using `yarn cmd category command`.
+For example, the [`app:dev`][app-dev] command can run as `yarn cmd app dev`.
 
-## Documentation
+Resources: [Available Commands][commands]
 
-### Commands
-
-* `yarn start` starts GraphQL server on `http://localhost:4000`
-* `yarn prisma <subcommand>` gives access to local version of Prisma CLI (e.g. `yarn prisma deploy`)
-
-> **Note**: We recommend that you're using `yarn dev` during development as it will give you access to the GraphQL API or your server (defined by the [application schema](./src/schema.graphql)) as well as to the Prisma API directly (defined by the [Prisma database schema](./generated/prisma.graphql)). If you're starting the server with `yarn start`, you'll only be able to access the API of the application schema.
-
-### Project structure
-
-![](https://imgur.com/95faUsa.png)
-
-| File name 　　　　　　　　　　　　　　| Description 　　　　　　　　<br><br>|
-| :--  | :--         |
-| `├── .env` | Defines environment variables |
-| `├── .graphqlconfig.yml` | Configuration file based on [`graphql-config`](https://github.com/prisma/graphql-config) (e.g. used by GraphQL Playground).|
-| `└── database ` (_directory_) | _Contains all files that are related to the Prisma database service_ |\
-| `　　├── prisma.yml` | The root configuration file for your Prisma database service ([docs](https://www.prismagraphql.com/docs/reference/prisma.yml/overview-and-example-foatho8aip)) |
-| `　　└── datamodel.graphql` | Defines your data model (written in [GraphQL SDL](https://blog.graph.cool/graphql-sdl-schema-definition-language-6755bcb9ce51)) |
-| `└── src ` (_directory_) | _Contains the source files for your GraphQL server_ |
-| `　　├── index.ts` | The entry point for your GraphQL server |
-| `　　├── schema.graphql` | The **application schema** defining the API exposed to client applications  |
-| `　　├── resolvers` (_directory_) | _Contains the implementation of the resolvers for the application schema_ |
-| `　　└── generated` (_directory_) | _Contains generated files_ |
-| `　　　　└── prisma-client` (_directory_) | The generated Prisma client |
-
-## Contributing
-
-The GraphQL boilerplates are maintained by the GraphQL community, with official support from the [Apollo](https://www.apollographql.com/) & [Prisma](https://www.prisma.io) teams.
-
-Your feedback is **very helpful**, please share your opinion and thoughts! If you have any questions or want to contribute yourself, join the `#graphql-boilerplate` channel on our [Slack](https://slack.prisma.io/). -->
+[typescript]: https://www.typescriptlang.org/
+[apollo-server]: https://www.apollographql.com/docs/apollo-server
+[prisma]: https://www.prisma.io
+[nexus-schema]: https://github.com/graphql-nexus/schema
+[commands]: https://github.com/troup-io/troup-server/blob/master/cmd/COMMANDS.ts
+[app-dev]: https://github.com/troup-io/troup-server/blob/master/cmd/COMMANDS.ts#L45
