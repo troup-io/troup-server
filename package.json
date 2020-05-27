@@ -11,7 +11,6 @@
         "start": "ts-node cmd app start",
         "build": "ts-node cmd app build",
         "lint": "ts-node cmd app lint",
-        "generate": "ts-node cmd generate",
         "cmd": "ts-node cmd"
     },
     "resolutions": {
