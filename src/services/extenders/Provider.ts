@@ -1,6 +1,7 @@
 import { ServerContext } from '../Context';
 
 import { tokenRetriever } from 'utils';
+import { NexusTypes, AllNexusOutputTypeDefs } from 'nexus/dist/core';
 
 export class Provider {
     protected prisma: ServerContext['prisma'];
@@ -31,6 +32,11 @@ export class Provider {
 }
 
 export type ServiceReturn<T extends keyof NexusGen['rootTypes']> = NexusGen['rootTypes'][T];
+
+export type ServiceReturnPick<
+    T extends keyof NexusGen['rootTypes'],
+    K extends keyof NexusGen['rootTypes'][T]
+> = Pick<ServiceReturn<T>, K>;
 
 export type ServiceQueryArgs<
     T extends keyof NexusGen['argTypes']['Query']
