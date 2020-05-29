@@ -3,7 +3,6 @@ import { objectType } from 'nexus';
 export const Team = objectType({
     name: 'Team',
     definition(t) {
-        t.list;
         t.model.id();
         t.model.createdAt();
         t.model.updatedAt();
