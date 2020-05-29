@@ -1,4 +1,4 @@
-import { ApolloError } from 'apollo-server-express';
+import { ApolloError, AuthenticationError } from 'apollo-server-express';
 
 import {
     Provider,
@@ -8,6 +8,8 @@ import {
 } from 'services/extenders/Provider';
 
 import { TeamErrors } from 'errors/team.errors';
+
+import { checkTeamUser } from 'utils';
 
 export class Team extends Provider {
     public async checkIfExists({
@@ -19,17 +21,45 @@ export class Team extends Provider {
     public async teamDetailsFromName({
         name,
     }: ServiceQueryArgs<'teamDetailsFromName'>): Promise<ServiceReturn<'TeamAuthInfoData'>> {
-        const team = await this.prisma.team.findOne({
-            where: { name },
-            select: {
-                id: true,
-                name: true,
-                displayName: true,
-            },
-        });
+        const userId = this.getUserId();
+
+        let team;
+
+        if (userId) {
+            team = await this.prisma.team.findOne({
+                where: { name },
+                select: {
+                    id: true,
+                    name: true,
+                    displayName: true,
+                    members: {
+                        where: { id: userId },
+                        select: {
+                            id: true,
+                        },
+                    },
+                    owner: {
+                        select: { id: true },
+                    },
+                },
+            });
+        } else {
+            team = await this.prisma.team.findOne({
+                where: { name },
+                select: {
+                    id: true,
+                    name: true,
+                    displayName: true,
+                },
+            });
+        }
 
         if (!team) {
             throw new ApolloError(TeamErrors.INVALID_TEAM);
+        }
+
+        if (typeof userId === 'number' && !checkTeamUser(team, userId)) {
+            throw new AuthenticationError(TeamErrors.INVALID_TEAM_ACCESS);
         }
 
         return team;
