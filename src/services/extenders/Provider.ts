@@ -1,5 +1,7 @@
 import { ServerContext } from '../Context';
 
+import { tokenRetriever } from 'utils';
+
 export class Provider {
     protected prisma: ServerContext['prisma'];
     protected request: ServerContext['request'];
@@ -15,6 +17,16 @@ export class Provider {
 
     public getHeader(key: keyof ServerContext['request']['headers']): string | string[] {
         return this.request.headers[key];
+    }
+
+    public getUserId(): number {
+        console.dir(this.request.headers.authorization);
+        if (this.request.headers.authorization) {
+            const { userId } = tokenRetriever(this.request.headers.authorization);
+            return userId;
+        }
+
+        return null;
     }
 }
 

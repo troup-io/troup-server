@@ -1,10 +1,11 @@
 import { Provider, ServiceReturn } from 'services/extenders/Provider';
 
-import { tokenRetriever, tokenSigner } from 'utils';
+import { tokenSigner } from 'utils';
 
 export class Auth extends Provider {
     public refreshAuthToken(): ServiceReturn<'TokenRefreshData'> {
-        const { userId } = tokenRetriever(this.request.headers.authorization, true);
+        const userId = this.getUserId();
+
         return {
             token: tokenSigner(userId),
         };
