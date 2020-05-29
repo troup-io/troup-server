@@ -8,7 +8,17 @@ export const User = objectType({
         t.model.updatedAt();
         t.model.email();
         t.model.profile();
-        t.model.ownerTeams();
-        t.model.memberTeams();
+        t.model.ownerTeams({
+            filtering: true,
+            ordering: true,
+            pagination: true,
+        });
+        t.model.memberTeams({
+            filtering: true,
+            ordering: {
+                id: true,
+            },
+            pagination: true,
+        });
     },
 });
