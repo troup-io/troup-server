@@ -27,30 +27,19 @@ export class User extends Provider {
         });
     }
 
-    public async getUserTeams(): Promise<ServiceReturn<'User'>> {
+    public async getUserTeams(): Promise<ServiceReturn<'UserTeamDetails'>> {
         const id = this.getUserId();
 
-        return await this.prisma.user.findOne({
+        console.log('\nID:', id);
+        const res = await this.prisma.user.findOne({
             where: { id },
-            include: {
+            select: {
                 ownerTeams: {
-                    select: {
-                        id: true,
-                        name: true,
-                        displayName: true,
-                        createdAt: true,
-                    },
                     orderBy: {
                         createdAt: 'asc',
                     },
                 },
                 memberTeams: {
-                    select: {
-                        id: true,
-                        name: true,
-                        displayName: true,
-                        createdAt: true,
-                    },
                     orderBy: {
                         id: 'desc',
                     },
@@ -58,5 +47,7 @@ export class User extends Provider {
                 },
             },
         });
+
+        return res;
     }
 }

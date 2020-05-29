@@ -1,6 +1,7 @@
 import { ObjectDefinitionBlock, stringArg } from 'nexus/dist/core';
 
 import { Context } from 'services/Context';
+import { UserTeamDetails } from 'resolvers/Types';
 
 export function UserQueries(t: ObjectDefinitionBlock<'Query'>): void {
     t.field('checkIfUserExists', {
@@ -24,10 +25,15 @@ export function UserQueries(t: ObjectDefinitionBlock<'Query'>): void {
     });
 
     t.field('getUserTeams', {
-        type: 'User',
+        type: UserTeamDetails,
         description: 'Get all the teams the user is associated with as an owner or a member.',
         async resolve(_, __, ctx: Context) {
-            return await ctx.user.getUserTeams();
+            console.log('');
+            const res = await ctx.user.getUserTeams();
+            console.log('res in resolve');
+            console.log(JSON.stringify(res, null, 2));
+            console.log('');
+            return res;
         },
     });
 }

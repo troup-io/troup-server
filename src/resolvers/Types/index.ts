@@ -60,3 +60,19 @@ export const TeamAuthInfoData = objectType({
         t.model('Team').displayName();
     },
 });
+
+export const UserTeamDetails = objectType({
+    name: 'UserTeamDetails',
+    definition(t) {
+        t.model('User').ownerTeams({
+            ordering: true,
+            filtering: true,
+            pagination: true,
+        });
+        t.model('User').memberTeams({
+            ordering: true,
+            filtering: true,
+            pagination: true,
+        });
+    },
+});
