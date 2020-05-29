@@ -15,9 +15,7 @@ export const User = objectType({
         });
         t.model.memberTeams({
             filtering: true,
-            ordering: {
-                id: true,
-            },
+            ordering: true,
             pagination: true,
         });
     },
