@@ -25,12 +25,13 @@ export class Provider {
     }
 }
 
-export type ServiceReturn<T extends keyof NexusGen['rootTypes']> = NexusGen['rootTypes'][T];
+type RootTypes = NexusGen['rootTypes'];
+type RootKeys = Exclude<keyof RootTypes, 'Mutation' | 'Query'>;
+type RootReturn<T extends RootKeys> = RootTypes[T];
 
-export type ServiceReturnPick<
-    T extends keyof NexusGen['rootTypes'],
-    K extends keyof NexusGen['rootTypes'][T]
-> = Pick<ServiceReturn<T>, K>;
+export type ServiceReturn<T extends RootKeys> = Promise<RootReturn<T>>;
+
+export type ServiceArrayReturn<T extends RootKeys> = Promise<Array<RootReturn<T>>>;
 
 export type ServiceQueryArgs<
     T extends keyof NexusGen['argTypes']['Query']
