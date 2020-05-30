@@ -10,7 +10,7 @@ export class Signin extends Provider {
     public async signinUser({
         email,
         password,
-    }: ServiceMutationArgs<'signinUser'>): Promise<ServiceReturn<'UserData'>> {
+    }: ServiceMutationArgs<'signinUser'>): ServiceReturn<'UserData'> {
         const user = await this.prisma.user.findOne({
             where: { email },
             include: {
@@ -50,7 +50,7 @@ export class Signin extends Provider {
         email,
         password,
         teamId: id,
-    }: ServiceMutationArgs<'signinTeam'>): Promise<ServiceReturn<'TeamSigninData'>> {
+    }: ServiceMutationArgs<'signinTeam'>): ServiceReturn<'TeamSigninData'> {
         const user = await this.prisma.user.findOne({
             where: { email },
             include: {

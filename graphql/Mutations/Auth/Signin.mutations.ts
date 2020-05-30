@@ -2,7 +2,7 @@ import { schema } from 'nexus';
 
 import { Context } from '../../../services/Context';
 
-import { UserData, TeamSigninData } from '../../../graphql/Types';
+import { UserData } from '../../../graphql/Types';
 
 export default schema.mutationType({
     definition(t) {
@@ -25,7 +25,18 @@ export default schema.mutationType({
         });
 
         t.field('signinTeam', {
-            type: TeamSigninData,
+            type: schema.objectType({
+                name: 'TeamSigninData',
+                definition(t) {
+                    t.field('user', {
+                        type: 'User',
+                        description: 'The user object.',
+                    });
+                    t.string('token', {
+                        description: 'The encoded JWT token.',
+                    });
+                },
+            }),
             description: 'Team sign in with an email and return the token and user.',
             args: {
                 email: schema.stringArg({

@@ -6,7 +6,14 @@ export default schema.extendType({
     type: 'Query',
     definition(t) {
         t.field('teamDetailsFromName', {
-            type: 'TeamAuthInfoData',
+            type: schema.objectType({
+                name: 'TeamAuthInfoData',
+                definition(t) {
+                    t.model('Team').id();
+                    t.model('Team').name();
+                    t.model('Team').displayName();
+                },
+            }),
             description: 'Fetch the information of a particular team by name.',
             args: {
                 name: schema.stringArg({

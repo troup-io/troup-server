@@ -11,7 +11,7 @@ export class Signup extends Provider {
         firstName,
         lastName,
         teamId,
-    }: ServiceMutationArgs<'signupUser'>): Promise<ServiceReturn<'UserData'>> {
+    }: ServiceMutationArgs<'signupUser'>): ServiceReturn<'UserData'> {
         const hashedPassword = await bcrypt.hash(password, 10);
         const user = await this.prisma.user.create({
             data: {
@@ -43,7 +43,7 @@ export class Signup extends Provider {
         firstName,
         lastName,
         teamName,
-    }: ServiceMutationArgs<'signupTeam'>): Promise<ServiceReturn<'TeamSignupData'>> {
+    }: ServiceMutationArgs<'signupTeam'>): ServiceReturn<'TeamSignupData'> {
         const hashedPassword = await bcrypt.hash(password, 10);
 
         const { owner, ...team } = await this.prisma.team.create({

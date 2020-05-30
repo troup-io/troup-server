@@ -14,13 +14,13 @@ import { checkTeamUser } from '../../utils';
 export class Team extends Provider {
     public async checkIfExists({
         teamName,
-    }: ServiceMutationArgs<'checkTeamName'>): Promise<ServiceReturn<'Boolean'>> {
+    }: ServiceMutationArgs<'checkTeamName'>): ServiceReturn<'Boolean'> {
         return !!(await this.prisma.team.count({ where: { name: teamName } }));
     }
 
     public async teamDetailsFromName({
         name,
-    }: ServiceQueryArgs<'teamDetailsFromName'>): Promise<ServiceReturn<'TeamAuthInfoData'>> {
+    }: ServiceQueryArgs<'teamDetailsFromName'>): ServiceReturn<'TeamAuthInfoData'> {
         const userId = this.getUserId();
 
         let team;

@@ -1,13 +1,18 @@
-import { Provider, ServiceQueryArgs, ServiceReturn } from '../extenders/Provider';
+import {
+    Provider,
+    ServiceQueryArgs,
+    ServiceReturn,
+    ServiceArrayReturn,
+} from '../extenders/Provider';
 
 export class User extends Provider {
     public async checkIfExists({
         email,
-    }: ServiceQueryArgs<'checkIfUserExists'>): Promise<ServiceReturn<'Boolean'>> {
-        return await !!(await this.prisma.user.count({ where: { email } }));
+    }: ServiceQueryArgs<'checkIfUserExists'>): ServiceReturn<'Boolean'> {
+        return !!(await this.prisma.user.count({ where: { email } }));
     }
 
-    public async userDetails(): Promise<ServiceReturn<'User'>> {
+    public async userDetails(): ServiceReturn<'UserDetails'> {
         const id = this.getUserId();
 
         return await this.prisma.user.findOne({
@@ -27,10 +32,10 @@ export class User extends Provider {
         });
     }
 
-    public async getUserTeams(): Promise<ServiceReturn<'UserTeamDetails'>> {
+    public async getUserTeams(): ServiceArrayReturn<'UserTeamDetails'> {
         const id = this.getUserId();
 
-        const teams = await this.prisma.team.findMany({
+        return await this.prisma.team.findMany({
             where: {
                 OR: {
                     members: {
@@ -41,8 +46,11 @@ export class User extends Provider {
                     ownerId: id,
                 },
             },
+            select: {
+                id: true,
+                name: true,
+                displayName: true,
+            },
         });
-
-        return teams;
     }
 }

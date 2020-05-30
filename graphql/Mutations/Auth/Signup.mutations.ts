@@ -2,7 +2,7 @@ import { schema } from 'nexus';
 
 import { Context } from '../../../services/Context';
 
-import { UserData, TeamSignupData } from '../../Types';
+import { UserData } from '../../Types';
 
 export default schema.extendType({
     type: 'Mutation',
@@ -38,7 +38,22 @@ export default schema.extendType({
         });
 
         t.field('signupTeam', {
-            type: TeamSignupData,
+            type: schema.objectType({
+                name: 'TeamSignupData',
+                definition(t) {
+                    t.field('team', {
+                        type: 'Team',
+                        description: 'The team object.',
+                    });
+                    t.field('user', {
+                        type: 'User',
+                        description: 'The user object.',
+                    });
+                    t.string('token', {
+                        description: 'The encoded JWT token.',
+                    });
+                },
+            }),
             description:
                 'Create a user and the relevant profile, along with the team and relevant profile.',
             args: {

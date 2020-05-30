@@ -1,13 +1,5 @@
-import { Provider, ServiceReturn } from '../../extenders/Provider';
-
-import { tokenSigner } from '../../../utils';
+import { Provider } from '../../extenders/Provider';
 
 export class Auth extends Provider {
-    public refreshAuthToken(): ServiceReturn<'TokenRefreshData'> {
-        const userId = this.getUserId();
-
-        return {
-            token: tokenSigner(userId),
-        };
-    }
+    // Add any methods that's not exclusively signin or signup methods here
 }

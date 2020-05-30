@@ -2,8 +2,6 @@ import { schema } from 'nexus';
 
 import { Context } from '../../services/Context';
 
-import { UserTeamDetails } from '../Types';
-
 export default schema.extendType({
     type: 'Query',
     definition(t) {
@@ -22,7 +20,17 @@ export default schema.extendType({
         });
 
         t.field('userDetails', {
-            type: 'User',
+            type: schema.objectType({
+                name: 'UserDetails',
+                definition(t) {
+                    t.model('User')
+                        .id()
+                        .createdAt()
+                        .updatedAt()
+                        .email()
+                        .profile();
+                },
+            }),
             description:
                 'Get bare-minimal user details to populate the interface and identify the user.',
             async resolve(_, data, ctx: Context) {
@@ -31,16 +39,18 @@ export default schema.extendType({
         });
 
         t.field('getUserTeams', {
-            type: UserTeamDetails,
-            list: [true, false],
+            type: schema.objectType({
+                name: 'UserTeamDetails',
+                definition(t) {
+                    t.model('Team').id();
+                    t.model('Team').name();
+                    t.model('Team').displayName();
+                },
+            }),
+            list: true,
             description: 'Get all the teams the user is associated with as an owner or a member.',
             async resolve(_, __, ctx: Context) {
-                console.log('');
-                const res = await ctx.user.getUserTeams();
-                console.log('res in resolve');
-                console.log(JSON.stringify(res, null, 2));
-                console.log('');
-                return res;
+                return await ctx.user.getUserTeams();
             },
         });
     },

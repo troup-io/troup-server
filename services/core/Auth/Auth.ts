@@ -11,7 +11,7 @@ export class Auth extends Provider {
     }: {
         email: string;
         password: string;
-    }): Promise<ServiceReturn<'UserData'>> {
+    }): ServiceReturn<'UserData'> {
         const user = await this.prisma.user.findOne({
             where: { email },
             include: {
@@ -55,7 +55,7 @@ export class Auth extends Provider {
         email: string;
         password: string;
         teamId: number;
-    }): Promise<ServiceReturn<'TeamSigninData'>> {
+    }): ServiceReturn<'TeamSigninData'> {
         const user = await this.prisma.user.findOne({
             where: { email },
             include: {
