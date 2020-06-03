@@ -42,12 +42,19 @@ export default schema.extendType({
             type: schema.objectType({
                 name: 'UserTeamDetails',
                 definition(t) {
-                    t.model('Team').id();
-                    t.model('Team').name();
-                    t.model('Team').displayName();
+                    t.model('User').id();
+                    t.model('User').ownerTeams({
+                        ordering: true,
+                        filtering: true,
+                        pagination: true,
+                    });
+                    t.model('User').memberTeams({
+                        ordering: true,
+                        filtering: true,
+                        pagination: true,
+                    });
                 },
             }),
-            list: true,
             description: 'Get all the teams the user is associated with as an owner or a member.',
             async resolve(_, __, ctx: Context) {
                 return await ctx.user.getUserTeams();

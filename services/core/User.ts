@@ -1,9 +1,4 @@
-import {
-    Provider,
-    ServiceQueryArgs,
-    ServiceReturn,
-    ServiceArrayReturn,
-} from '../extenders/Provider';
+import { Provider, ServiceQueryArgs, ServiceReturn } from '../extenders/Provider';
 
 export class User extends Provider {
     public async checkIfExists({
@@ -32,24 +27,29 @@ export class User extends Provider {
         });
     }
 
-    public async getUserTeams(): ServiceArrayReturn<'UserTeamDetails'> {
+    public async getUserTeams(): ServiceReturn<'UserTeamDetails'> {
         const id = this.getUserId();
 
-        return await this.prisma.team.findMany({
-            where: {
-                OR: {
-                    members: {
-                        some: {
-                            id,
-                        },
-                    },
-                    ownerId: id,
-                },
-            },
+        return await this.prisma.user.findOne({
+            where: { id },
             select: {
                 id: true,
-                name: true,
-                displayName: true,
+                ownerTeams: {
+                    select: {
+                        id: true,
+                        name: true,
+                        displayName: true,
+                        createdAt: true,
+                    },
+                },
+                memberTeams: {
+                    select: {
+                        id: true,
+                        name: true,
+                        displayName: true,
+                        createdAt: true,
+                    },
+                },
             },
         });
     }
