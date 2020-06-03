@@ -28,14 +28,18 @@ export default {
         bsSeq: 2,
         rsSeq: 3,
     },
-    'db:clean': {
-        command: './node_modules/.bin/ts-node cmd/runners/prune-database',
-        rsSeq: 1,
+    'db:generate': {
+        command: 'yarn prisma generate',
+        bsSeq: 3,
     },
     'db:seed': {
         command: './node_modules/.bin/ts-node cmd/runners/seed-database',
-        bsSeq: 3,
+        bsSeq: 4,
         rsSeq: 4,
+    },
+    'db:clean': {
+        command: './node_modules/.bin/ts-node cmd/runners/prune-database',
+        rsSeq: 1,
     },
     'app:dev': {
         command: 'dotenv -- nodehawk',

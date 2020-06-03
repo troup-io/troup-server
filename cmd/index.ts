@@ -17,7 +17,7 @@ function runSingleCommand(command: CommandItem): void {
         });
         return;
     } catch (error) {
-        if (runner === 'reset') {
+        if (runner === 'reset' || runner === 'bootstrap') {
             runSingleCommand(command);
         } else {
             process.exit(1);
