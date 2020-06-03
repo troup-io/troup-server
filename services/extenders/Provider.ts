@@ -29,7 +29,9 @@ type RootTypes = NexusGen['rootTypes'];
 type RootKeys = Exclude<keyof RootTypes, 'Mutation' | 'Query'>;
 type RootReturn<T extends RootKeys> = RootTypes[T];
 
-export type ServiceReturn<T extends RootKeys> = Promise<RootReturn<T>>;
+export type ServiceReturn<T extends RootKeys, K = boolean> = Promise<
+    K extends true ? RootReturn<T> : Array<RootReturn<T>>
+>;
 
 export type ServiceArrayReturn<T extends RootKeys> = Promise<Array<RootReturn<T>>>;
 
