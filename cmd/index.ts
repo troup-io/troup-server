@@ -17,20 +17,24 @@ function runSingleCommand(command: CommandItem): void {
         });
         return;
     } catch (error) {
-        process.exit(1);
+        if (runner === 'reset') {
+            runSingleCommand(command);
+        } else {
+            process.exit(1);
+        }
     }
 }
 
-function commandRunnner(commands: CommandItem[]): void {
+async function commandRunnner(commands: CommandItem[]): Promise<void> {
     if (commands.length) {
         for (const command of commands) {
-            runSingleCommand(command);
+            await runSingleCommand(command);
         }
     }
 }
 
 // eslint-disable-next-line complexity
-(function main(): void {
+(async function main(): Promise<void> {
     const allCommands = Object.keys(COMMANDS);
     const availableCommands = allCommands.filter(cmd => cmd.includes(`${runner}:`));
 
@@ -44,7 +48,7 @@ function commandRunnner(commands: CommandItem[]): void {
                 .filter((command: CommandItem) => command.bsSeq)
                 .sort((a: CommandItem, b: CommandItem) => a.bsSeq - b.bsSeq) as CommandItem[];
 
-            commandRunnner(bootstrapCommands);
+            await commandRunnner(bootstrapCommands);
             return;
         }
 
@@ -53,7 +57,7 @@ function commandRunnner(commands: CommandItem[]): void {
                 .filter((command: CommandItem) => command.rsSeq)
                 .sort((a: CommandItem, b: CommandItem) => a.rsSeq - b.rsSeq) as CommandItem[];
 
-            commandRunnner(resetCommands);
+            await commandRunnner(resetCommands);
             return;
         }
 
@@ -87,3 +91,12 @@ function commandRunnner(commands: CommandItem[]): void {
         process.exit(1);
     }
 })();
+
+process.on('unhandledRejection', error => {
+    console.log('\n\n', error);
+    if ((error as Error).message.includes(`Can't reach database`)) {
+        return;
+    }
+
+    console.error(error);
+});

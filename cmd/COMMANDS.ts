@@ -32,6 +32,11 @@ export default {
         command: './node_modules/.bin/ts-node cmd/runners/prune-database',
         rsSeq: 1,
     },
+    'db:seed': {
+        command: './node_modules/.bin/ts-node cmd/runners/seed-database',
+        bsSeq: 3,
+        rsSeq: 4,
+    },
     'app:dev': {
         command: 'dotenv -- nodehawk',
     },
