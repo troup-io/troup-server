@@ -1,25 +1,29 @@
+import { log } from 'nexus';
 import * as bcrypt from 'bcryptjs';
 import * as jwt from 'jsonwebtoken';
 import { UserGetPayload, TeamGetPayload } from 'nexus-plugin-prisma/client';
+import { AuthenticationError } from 'apollo-server-express';
 
 export function tokenSigner(userId: number): string {
-    return jwt.sign({ userId }, process.env.APP_SECRET, {
-        expiresIn: '2 days',
-    });
+    return jwt.sign({ userId }, process.env.APP_SECRET);
 }
 
 export function tokenRetriever(bearerToken: string, ignoreExpiration = false): { userId: number } {
-    const token = bearerToken.split('Bearer ').pop();
+    const token = bearerToken.split(/^bearer\s/i).pop();
 
     if (token && token !== 'null') {
-        console.log('in if!');
-        const { userId } = jwt.verify(token as string, process.env.APP_SECRET, {
-            ignoreExpiration,
-        }) as any;
+        try {
+            const { userId } = jwt.verify(token as string, process.env.APP_SECRET, {
+                ignoreExpiration,
+            }) as any;
 
-        return {
-            userId: parseInt(userId, 10),
-        };
+            return {
+                userId: parseInt(userId, 10),
+            };
+        } catch (error) {
+            log.error(error);
+            throw new AuthenticationError('Invalid token. Please login to get a valid token.');
+        }
     }
 
     return {
