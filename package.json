@@ -7,6 +7,7 @@
     "license": "Apache 2.0",
     "scripts": {
         "bootstrap": "ts-node cmd bootstrap",
+        "reset": "ts-node cmd reset",
         "dev": "nexus dev",
         "build": "nexus build",
         "start": "ts-node cmd app start",

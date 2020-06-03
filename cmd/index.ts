@@ -29,32 +29,36 @@ function commandRunnner(commands: CommandItem[]): void {
     }
 }
 
+// eslint-disable-next-line complexity
 (function main(): void {
     const allCommands = Object.keys(COMMANDS);
     const availableCommands = allCommands.filter(cmd => cmd.includes(`${runner}:`));
 
     try {
-        if (runner !== 'bootstrap' && !availableCommands.length) {
+        if (runner !== 'bootstrap' && runner !== 'reset' && !availableCommands.length) {
             throw 1;
         }
 
         if (runner === 'bootstrap') {
             const bootstrapCommands = Object.values(COMMANDS)
-                .filter((command: CommandItem) => command.bootstrap)
-                .sort((a: CommandItem, b: CommandItem) => a.sequence - b.sequence) as CommandItem[];
+                .filter((command: CommandItem) => command.bsSeq)
+                .sort((a: CommandItem, b: CommandItem) => a.bsSeq - b.bsSeq) as CommandItem[];
 
             commandRunnner(bootstrapCommands);
             return;
         }
 
-        if (!subrunner) {
-            const matchedCommands = Object.keys(COMMANDS)
-                .filter(command => command.includes(runner))
-                .map(command => COMMANDS[command])
-                .sort((a: CommandItem, b: CommandItem) => a.sequence - b.sequence) as CommandItem[];
+        if (runner === 'reset') {
+            const resetCommands = Object.values(COMMANDS)
+                .filter((command: CommandItem) => command.rsSeq)
+                .sort((a: CommandItem, b: CommandItem) => a.rsSeq - b.rsSeq) as CommandItem[];
 
-            commandRunnner(matchedCommands);
+            commandRunnner(resetCommands);
             return;
+        }
+
+        if (!subrunner) {
+            throw 1;
         }
 
         if (subrunner) {

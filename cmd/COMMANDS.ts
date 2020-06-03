@@ -12,35 +12,25 @@ export interface Commands {
 export interface CommandItem {
     command: string;
     cwd?: string;
-    sequence?: number;
-    bootstrap?: boolean;
+    bsSeq?: number;
+    rsSeq?: number;
 }
 
 export default {
     'db:start': {
         command: "docker-compose --project-name 'troup' up -d",
         cwd: 'prisma',
-        sequence: 1,
-        bootstrap: true,
+        bsSeq: 1,
+        rsSeq: 2,
     },
     'db:setup': {
         command: 'yarn prisma migrate up --experimental',
-        sequence: 2,
-        bootstrap: true,
+        bsSeq: 2,
+        rsSeq: 3,
     },
     'db:clean': {
         command: './node_modules/.bin/ts-node cmd/runners/prune-database',
-    },
-    'generate:client': {
-        command: 'yarn prisma generate',
-        sequence: 3,
-        bootstrap: true,
-    },
-    'generate:typings': {
-        command:
-            './node_modules/.bin/ts-node-dev --respawn -r tsconfig-paths/register -T src/schema',
-        sequence: 4,
-        bootstrap: true,
+        rsSeq: 1,
     },
     'app:dev': {
         command: 'dotenv -- nodehawk',
