@@ -22,6 +22,10 @@ The Troup client is the frontend app that helps the user address problems that w
 
 ## Available scripts
 
+### `yarn boostrap`
+
+Bootstrap the database and the server. This will also seed your local database.
+
 ### `yarn dev`
 
 Start the development server and watch for file changes.
@@ -42,6 +46,10 @@ Run the linter, catching out any errors or warning that may occur.
 
 The raw command runner. All commands that are listed as `category:command` can be run using `yarn cmd category command`.
 For example, the [`app:dev`][app-dev] command can run as `yarn cmd app dev`.
+
+### UNSAFE: `yarn reset`
+
+Use this if something has gone horribly wrong with your database. It wipes out all data, clears out all volumes and containers and restarts a new container.
 
 Resources: [Available Commands][commands]
 
