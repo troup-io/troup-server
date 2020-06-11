@@ -20,6 +20,23 @@ The Troup server is the Express-GraphQL app that helps the client address proble
 -   [Prisma][prisma]
 -   [Nexus Schema][nexus-schema]
 
+## `.env` Setup
+
+You will need to add two `.env` files into the project to get it up and running. The first `.env` file should be created on the root of the project and contains the following information:
+
+```
+NODE_ENV="development"
+APP_SECRET="jwtsecret123"
+NODE_PATH="./src"
+DATABASE_URL="postgresql://prisma:prisma@localhost:5432/postgres?schema=public"
+```
+
+The second `.env` file should be created in the `prisma` folder and contains the following information:
+
+```
+DATABASE_URL="postgresql://prisma:prisma@localhost:5432/postgres?schema=public"
+```
+
 ## Available scripts
 
 ### `yarn boostrap`
