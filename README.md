@@ -8,7 +8,7 @@
 >
 > This project is under heavy development and is on the lookout for contributors both technical and ono-technical. If you are interested in understanding the product and contributing, do get in touch at hello@troupapp.com.
 
-The Troup client is the frontend app that helps the user address problems that we aim to solve. The client is built atop wonderful open-source projects with the goal of providing a fluid experience to the user.
+The Troup server is the Express-GraphQL app that helps the client address problems that we aim to solve. The server is built atop wonderful open-source projects with the goal of providing a fluid experience to the client.
 
 **Languages:**
 
