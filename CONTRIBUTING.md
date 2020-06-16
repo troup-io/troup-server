@@ -39,6 +39,10 @@ git config user.name "YOUR NAME HERE"
 git config user.email "YOUR EMAIL HERE"
 ```
 
+## Issue Tracking
+
+All the issues related to the server are tracked on the [repository itself](https://github.com/troup-io/troup-server/issues). For any discussion regarding the project, or for questions, please feel free to ask on our [Spectrum Chat](http://chat.troup.io).
+
 ## Pull Request Process
 
 Ensure any install or build dependencies are removed before the end of the layer when doing a build.
