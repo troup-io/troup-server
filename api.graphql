@@ -46,14 +46,12 @@ type Label {
   createdAt: DateTime!
   id: Int!
   isGlobal: Boolean!
+  project: Project
+  projectId: Int
+  team: Team!
   teamId: Int!
   tickets(after: TicketWhereUniqueInput, before: TicketWhereUniqueInput, first: Int, last: Int, orderBy: TicketOrderByInput, where: TicketWhereInput): [Ticket!]!
   updatedAt: DateTime!
-  value: String!
-}
-
-type LabelArgument {
-  id: Int
   value: String!
 }
 
@@ -61,6 +59,18 @@ input LabelFilter {
   every: LabelWhereInput
   none: LabelWhereInput
   some: LabelWhereInput
+}
+
+input LabelOrderByInput {
+  background: OrderByArg
+  createdAt: OrderByArg
+  foreground: OrderByArg
+  id: OrderByArg
+  isGlobal: OrderByArg
+  projectId: OrderByArg
+  teamId: OrderByArg
+  updatedAt: OrderByArg
+  value: OrderByArg
 }
 
 input LabelWhereInput {
@@ -216,7 +226,8 @@ enum OrderByArg {
 type Project {
   createdAt: DateTime!
   id: Int!
-  labels(after: LabelWhereUniqueInput, before: LabelWhereUniqueInput, first: Int, last: Int): [Label!]!
+  labels(after: LabelWhereUniqueInput, before: LabelWhereUniqueInput, first: Int, last: Int, orderBy: LabelOrderByInput, where: LabelWhereInput): [Label!]!
+  members(after: UserWhereUniqueInput, before: UserWhereUniqueInput, first: Int, last: Int, orderBy: UserOrderByInput, where: UserWhereInput): [User!]!
   name: String!
   sequence: Int!
   team: Team!
@@ -368,7 +379,7 @@ type Ticket {
   body: String!
   createdAt: DateTime!
   id: Int!
-  labels(after: LabelWhereUniqueInput, before: LabelWhereUniqueInput, first: Int, last: Int): [Label!]!
+  labels(after: LabelWhereUniqueInput, before: LabelWhereUniqueInput, first: Int, last: Int, orderBy: LabelOrderByInput, where: LabelWhereInput): [Label!]!
   project: Project!
   projectId: Int!
   sequence: Int!
@@ -448,6 +459,14 @@ input UserFilter {
   every: UserWhereInput
   none: UserWhereInput
   some: UserWhereInput
+}
+
+input UserOrderByInput {
+  createdAt: OrderByArg
+  email: OrderByArg
+  id: OrderByArg
+  password: OrderByArg
+  updatedAt: OrderByArg
 }
 
 type UserProfile {
