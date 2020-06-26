@@ -1,6 +1,6 @@
 {
     "include": [".", "types.d.ts"],
-    "exclude": ["node_modules", "build", "dist"],
+    "exclude": ["node_modules", "build", "dist", ".git"],
     "compilerOptions": {
         "rootDir": ".",
         "baseUrl": ".",
