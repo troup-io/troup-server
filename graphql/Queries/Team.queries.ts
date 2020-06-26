@@ -5,6 +5,15 @@ import { Context } from '../../services/Context';
 export default schema.extendType({
     type: 'Query',
     definition(t) {
+        t.field('teams', {
+            type: 'Team',
+            description: 'Fetch the details of all the teams of a particular user.',
+            list: true,
+            async resolve(_, __, ctx: Context) {
+                return await ctx.team.getAll();
+            },
+        });
+
         t.field('teamDetailsFromName', {
             type: schema.objectType({
                 name: 'TeamAuthInfoData',

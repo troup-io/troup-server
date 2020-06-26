@@ -5,6 +5,7 @@ import {
     ServiceMutationArgs,
     ServiceReturn,
     ServiceQueryArgs,
+    ServiceArrayReturn,
 } from '../extenders/Provider';
 
 import { TeamErrors } from '../../errors/team.errors';
@@ -16,6 +17,25 @@ export class Team extends Provider {
         teamName,
     }: ServiceMutationArgs<'checkTeamName'>): ServiceReturn<'Boolean'> {
         return !!(await this.prisma.team.count({ where: { name: teamName } }));
+    }
+
+    public async getAll(): ServiceArrayReturn<'Team'> {
+        return await this.prisma.team.findMany({
+            where: {
+                OR: [
+                    {
+                        ownerId: this.userId,
+                    },
+                    {
+                        members: {
+                            some: {
+                                id: this.userId,
+                            },
+                        },
+                    },
+                ],
+            },
+        });
     }
 
     public async teamDetailsFromName({
