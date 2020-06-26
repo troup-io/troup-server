@@ -1,28 +1,26 @@
 import { ServerContext } from '../Context';
 
-import { tokenRetriever } from '../../utils';
+import { getUserId, getTeamId } from '../../utils';
 
 export class Provider {
-    protected prisma: ServerContext['prisma'];
+    protected prisma: ServerContext['db'];
     protected request: ServerContext['request'];
+    protected userId?: number;
+    protected teamId?: number;
 
     constructor(ctx: ServerContext) {
-        this.prisma = ctx.prisma;
+        this.prisma = ctx.db;
         this.request = ctx.request;
+        this.userId = this.getUserId();
+        this.teamId = this.getTeamId();
     }
 
     public getHeader(key: keyof ServerContext['request']['headers']): string | string[] {
         return this.request.headers[key];
     }
 
-    public getUserId(): number {
-        if (this.request.headers.authorization) {
-            const { userId } = tokenRetriever(this.request.headers.authorization);
-            return userId;
-        }
-
-        return null;
-    }
+    public getUserId = getUserId.bind(this);
+    public getTeamId = getTeamId.bind(this);
 }
 
 type RootTypes = NexusGen['rootTypes'];

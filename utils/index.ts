@@ -63,3 +63,24 @@ export function checkTeamUser(
 ): boolean {
     return !!team.members.length || team.owner.id === userId;
 }
+
+export function randomPastel(): string {
+    return `hsla(${~~(360 * Math.random())},70%,90%,1)`;
+}
+
+export function getUserId(): number {
+    if (this.request.headers.authorization) {
+        const { userId } = tokenRetriever(this.request.headers.authorization);
+        return userId;
+    }
+
+    return null;
+}
+
+export function getTeamId(): number {
+    if (this.request.headers.context) {
+        return parseInt(this.request.headers.context.split(/\s/).pop(), 10);
+    }
+
+    return null;
+}
