@@ -1,18 +1,22 @@
 /* eslint-disable camelcase */
 
 import { PrismaClient } from 'nexus-plugin-prisma/client';
+import { config } from 'dotenv';
+import * as bcrypt from 'bcryptjs';
 
 import users from '../../prisma/seed';
 
+config();
 const prisma = new PrismaClient();
 
 console.log('Starting seed..');
 (async function(): Promise<void> {
     try {
+        const adminHashedPassword = await bcrypt.hash('admin', 10);
         const adminUser = await prisma.user.create({
             data: {
                 email: 'admin@troup.io',
-                password: 'admin',
+                password: adminHashedPassword,
                 profile: {
                     create: {
                         firstName: 'Admin',
@@ -49,10 +53,11 @@ console.log('Starting seed..');
         const teamId = adminUser.ownerTeams[0].id;
 
         for (const user of users) {
+            const hashedPassword = await bcrypt.hash(user.password, 10);
             await prisma.user.create({
                 data: {
                     email: user.email,
-                    password: user.password,
+                    password: hashedPassword,
                     profile: {
                         create: {
                             firstName: user.firstName,
