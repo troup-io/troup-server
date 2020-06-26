@@ -8,16 +8,19 @@ generator client {
 }
 
 model Team {
-    id          Int      @default(autoincrement()) @id
-    createdAt   DateTime @default(now())
-    updatedAt   DateTime @updatedAt
-    maxMembers  Int      @default(25)
-    name        String   @unique
+    id          Int       @default(autoincrement()) @id
+    createdAt   DateTime  @default(now())
+    updatedAt   DateTime  @updatedAt
+    maxMembers  Int       @default(25)
+    name        String    @unique
     displayName String?
     adminEmail  String?
-    owner       User     @relation("_UserOwnerOfTeams", fields: [ownerId], references: [id])
+    owner       User      @relation("_UserOwnerOfTeams", fields: [ownerId])
     ownerId     Int
-    members     User[]   @relation("_UsersOnTeam", references: [id])
+    members     User[]
+    labels      Label[]
+    projects    Project[]
+    tickets     Ticket[]
 }
 
 model User {
@@ -27,8 +30,10 @@ model User {
     email       String      @unique
     password    String
     profile     UserProfile
-    memberTeams Team[]      @relation("_UsersOnTeam")
+    memberTeams Team[]
     ownerTeams  Team[]      @relation("_UserOwnerOfTeams")
+    projects    Project[]   @relation(references: [id])
+    tickets     Ticket[]
 }
 
 model UserProfile {
@@ -52,11 +57,13 @@ model Project {
     id        Int      @default(autoincrement()) @id
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
+    sequence  Int
     name      String
-    tickets   Ticket[]
+    team      Team     @relation(fields: [teamId], references: [id])
     teamId    Int
-    userId    Int
-    labels    Label[]  @relation(references: [id])
+    tickets   Ticket[]
+    members   User[]
+    labels    Label[]
 }
 
 model Ticket {
@@ -66,25 +73,27 @@ model Ticket {
     sequence  Int
     title     String
     body      String
+    team      Team     @relation(fields: [teamId], references: [id])
     teamId    Int
-    userId    Int
-    Project   Project  @relation(fields: [projectId], references: [id])
+    author    User     @relation(fields: [authorId], references: [id])
+    authorId  Int
+    project   Project  @relation(fields: [projectId], references: [id])
     projectId Int
     labels    Label[]  @relation(references: [id])
 }
 
 // Supporting models
 model Label {
-    id         Int       @default(autoincrement()) @id
-    createdAt  DateTime  @default(now())
-    updatedAt  DateTime  @updatedAt
+    id         Int      @default(autoincrement()) @id
+    createdAt  DateTime @default(now())
+    updatedAt  DateTime @updatedAt
     value      String
+    isGlobal   Boolean  @default(false)
     background String
-    foreground String
+    foreground String   @default("#222222")
+    team       Team     @relation(fields: [teamId], references: [id])
     teamId     Int
+    project    Project? @relation(fields: [projectId], references: [id])
     projectId  Int?
-    boardId    Int?
-    isGlobal   Boolean   @default(true)
-    tickets    Ticket[]  @relation(references: [id])
-    projects   Project[] @relation(references: [id])
+    tickets    Ticket[] @relation(references: [id])
 }
