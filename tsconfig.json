@@ -1,5 +1,5 @@
 {
-    "include": ["."],
+    "include": [".", "types.d.ts"],
     "exclude": ["node_modules", "build", "dist"],
     "compilerOptions": {
         "rootDir": ".",
@@ -18,6 +18,8 @@
         ],
         "paths": {
             "*": ["*"]
-        }
+        },
+        "typeRoots": ["node_modules/@types", "types"],
+        "noEmit": true
     }
 }
