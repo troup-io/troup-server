@@ -88,9 +88,9 @@ model Label {
     createdAt  DateTime @default(now())
     updatedAt  DateTime @updatedAt
     value      String
-    isGlobal   Boolean  @default(false)
+    isGlobal   Boolean? @default(false)
     background String
-    foreground String   @default("#222222")
+    foreground String?  @default("#222222")
     team       Team     @relation(fields: [teamId], references: [id])
     teamId     Int
     project    Project? @relation(fields: [projectId], references: [id])
