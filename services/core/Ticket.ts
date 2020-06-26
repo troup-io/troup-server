@@ -2,6 +2,8 @@ import { AuthenticationError } from 'apollo-server-express';
 
 import { Provider, ServiceReturn, ServiceMutationArgs } from '../extenders/Provider';
 
+import { AuthErrors } from '../../errors/auth.errors';
+
 import { sequenceAndLabels } from '../../utils/label-sequence';
 
 export class Ticket extends Provider {
@@ -34,7 +36,7 @@ export class Ticket extends Provider {
         });
 
         if (!resourceValid) {
-            throw new AuthenticationError('You cannot create a ticket for this project.');
+            throw new AuthenticationError(AuthErrors.PROJECT_ACCESS_DENIED);
         }
 
         const { sequence, labelConnectors } = await sequenceAndLabels.call(this, {

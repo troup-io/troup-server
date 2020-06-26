@@ -2,6 +2,8 @@ import { AuthenticationError } from 'apollo-server-express';
 
 import { Middleware } from '../types/helpers.types';
 
+import { AuthErrors } from '../errors/auth.errors';
+
 import { getUserId, getTeamId } from '../utils';
 
 export const ResourceCheckMiddleware: Middleware = () => async (
@@ -33,6 +35,11 @@ export const ResourceCheckMiddleware: Middleware = () => async (
                                 some: { id: teamId },
                             },
                         },
+                        {
+                            profile: {
+                                isSuperAdmin: true,
+                            },
+                        },
                     ],
                 },
             ],
@@ -40,9 +47,7 @@ export const ResourceCheckMiddleware: Middleware = () => async (
     });
 
     if (!accessValid) {
-        throw new AuthenticationError(
-            'You do not have permission to create a resource on this team.'
-        );
+        throw new AuthenticationError(AuthErrors.ACCESS_DENIED);
     }
 
     return await next(root, args, context, info);
