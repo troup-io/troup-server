@@ -45,7 +45,7 @@ type Label {
   background: String!
   createdAt: DateTime!
   id: Int!
-  isGlobal: Boolean!
+  isGlobal: Boolean
   project: Project
   projectId: Int
   team: Team!
@@ -77,9 +77,9 @@ input LabelWhereInput {
   AND: [LabelWhereInput!]
   background: StringFilter
   createdAt: DateTimeFilter
-  foreground: StringFilter
+  foreground: NullableStringFilter
   id: IntFilter
-  isGlobal: BooleanFilter
+  isGlobal: NullableBooleanFilter
   NOT: [LabelWhereInput!]
   OR: [LabelWhereInput!]
   project: ProjectWhereInput
@@ -193,6 +193,11 @@ type Mutation {
   ): UserData
 }
 
+input NullableBooleanFilter {
+  equals: Boolean
+  not: Boolean
+}
+
 input NullableIntFilter {
   equals: Int
   gt: Int
@@ -273,6 +278,9 @@ type Query {
     """Team's name to fetch data for."""
     name: String!
   ): TeamAuthInfoData
+
+  """Fetch the details of all the teams of a particular user."""
+  teams: [Team!]
 
   """
   Get bare-minimal user details to populate the interface and identify the user.
