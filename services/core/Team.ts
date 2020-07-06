@@ -78,7 +78,7 @@ export class Team extends Provider {
             throw new ApolloError(TeamErrors.INVALID_TEAM);
         }
 
-        if (typeof userId === 'number' && !checkTeamUser(team, userId)) {
+        if (!checkTeamUser(team, userId)) {
             throw new AuthenticationError(TeamErrors.INVALID_TEAM_ACCESS);
         }
 

@@ -11,7 +11,7 @@ export function tokenSigner(userId: number): string {
 export function tokenRetriever(bearerToken: string, ignoreExpiration = false): { userId: number } {
     const token = bearerToken.split(/^bearer\s/i).pop();
 
-    if (token && token !== 'null') {
+    if (token && token !== 'null' && token !== 'undefined') {
         try {
             const { userId } = jwt.verify(token as string, process.env.APP_SECRET, {
                 ignoreExpiration,
@@ -74,7 +74,7 @@ export function getUserId(): number {
         return userId;
     }
 
-    return null;
+    return void 0;
 }
 
 export function getTeamId(): number {
@@ -82,5 +82,5 @@ export function getTeamId(): number {
         return parseInt(this.request.headers.context.split(/\s/).pop(), 10);
     }
 
-    return null;
+    return void 0;
 }
