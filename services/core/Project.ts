@@ -1,4 +1,9 @@
-import { Provider, ServiceReturn, ServiceMutationArgs } from '../extenders/Provider';
+import {
+    Provider,
+    ServiceReturn,
+    ServiceMutationArgs,
+    ServiceArrayReturn,
+} from '../extenders/Provider';
 
 import { sequenceAndLabels } from '../../utils/label-sequence';
 
@@ -24,6 +29,14 @@ export class Project extends Provider {
                 members: {
                     connect: [...members.map(member => ({ id: member })), { id: userId }],
                 },
+            },
+        });
+    }
+
+    public async getAll(): ServiceArrayReturn<'Project'> {
+        return await this.prisma.project.findMany({
+            where: {
+                teamId: this.teamId,
             },
         });
     }
