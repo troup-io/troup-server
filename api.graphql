@@ -273,6 +273,9 @@ type Query {
   """Get all the teams the user is associated with as an owner or a member."""
   getUserTeams: UserTeamDetails
 
+  """Get all the projects of a particular team."""
+  projects: [Project!]
+
   """Fetch the information of a particular team by name."""
   teamDetailsFromName(
     """Team's name to fetch data for."""
